@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const PORT = process.env.PORT || 8089;
 
 app.get("/hello", (req, res) => {
-  res.send("hello world");
+  res.send("hey world");
 });
 
 app.listen(PORT, () => {
