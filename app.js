@@ -2,6 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+const snippetsRoutes = require("./routes/snippets.routes");
+
 const app = express();
 
 app.use(cors());
@@ -13,6 +15,8 @@ const PORT = process.env.PORT || 8089;
 app.get("/hello", (req, res) => {
   res.send("hey world");
 });
+
+app.use(snippetsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
