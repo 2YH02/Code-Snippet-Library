@@ -18,6 +18,8 @@ async function storeData(req, res, next) {
     req.body.body,
     req.body.author_id,
     req.body.created_at,
+    req.body.updated_at,
+    req.body.rating,
   ];
 
   const snippet = new Snippet(...data);
