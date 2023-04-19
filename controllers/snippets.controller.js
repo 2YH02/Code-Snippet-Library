@@ -1,39 +1,33 @@
-const db = require("../data/database");
+const { snippets } = require("../models/index");
 
-const Snippet = require("../models/snippet.model");
-
-async function getData(req, res, next) {
+async function getAllData(req, res, next) {
   try {
-    snippets = await Snippet.getAllSnippets();
+    const _snippets = await snippets.findAll({});
+    console.log(_snippets);
+    res.json(_snippets);
   } catch (error) {
     return next(error);
   }
-
-  res.json(snippets[0]);
 }
 
-async function storeData(req, res, next) {
-  const data = [
-    req.body.title,
-    req.body.body,
-    req.body.author_id,
-    req.body.created_at,
-    req.body.updated_at,
-    req.body.rating,
-  ];
-
-  const snippet = new Snippet(...data);
-
+async function addNewData(req, res, next) {
   try {
-    await snippet.save();
+    snippets.create({
+      title: req.body.title,
+      body: req.body.body,
+      author_id: req.body.author_id,
+      created_at: req.body.created_at,
+      updated_at: req.body.updated_at,
+      rating: req.body.rating,
+    });
+
+    res.json({ message: "추가완료"});
   } catch (error) {
     return next(error);
   }
-
-  res.json({ message: "추가완료", createdSnippet: snippet });
 }
 
 module.exports = {
-  storeData: storeData,
-  getData: getData,
+  getAllData: getAllData,
+  addNewData: addNewData,
 };
