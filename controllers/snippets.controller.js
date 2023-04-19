@@ -11,6 +11,9 @@ async function getAllData(req, res, next) {
 }
 
 async function addNewData(req, res, next) {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({ error: "Request body is missing or empty" });
+  }
   try {
     snippets.create({
       title: req.body.title,
@@ -21,7 +24,7 @@ async function addNewData(req, res, next) {
       rating: req.body.rating,
     });
 
-    res.json({ message: "추가완료"});
+    res.json({ message: "추가완료" });
   } catch (error) {
     return next(error);
   }
