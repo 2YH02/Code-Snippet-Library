@@ -35,7 +35,9 @@ class snippets extends Model {
       {
         sequelize,
         tableName: "snippets",
-        timestamps: false,
+        timestamps: true,
+        createdAt: "created_at",
+        updatedAt: "updated_at",
         indexes: [
           {
             name: "PRIMARY",
