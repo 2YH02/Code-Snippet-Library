@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const snippetsRoutes = require("./routes/snippets.routes");
+const authorsRoutes = require("./routes/authors.routes");
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get("/hello", (req, res) => {
 });
 
 app.use(snippetsRoutes);
+app.use(authorsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
