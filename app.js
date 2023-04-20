@@ -1,17 +1,23 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const config = require("./config");
 const snippetRoutes = require("./routes/snippetRoutes");
 const authorRoutes = require("./routes/authorRoutes");
 
 const checkRequestBody = (req, res, next) => {
-  if (!req.body || Object.keys(req.body).length === 0) {
-    return res.status(400).json({ error: "Request body is missing or empty" });
+  if (req.method === "POST") {
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res
+        .status(400)
+        .json({ error: "Request body is missing or empty" });
+    }
   }
   next();
 };
 
 // Set up middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
