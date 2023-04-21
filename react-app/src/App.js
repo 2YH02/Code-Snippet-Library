@@ -1,27 +1,19 @@
-import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { SnippetLists } from "./components/SnippetLists";
+import Snippet from "./components/Snippet";
 
 function App() {
-  const [snippets, setSnippets] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/snippets")
-      .then((res) => res.json())
-      .then((data) => setSnippets(data.body))
-      .catch((error) => console.error(error));
-  }, []);
-
   return (
     <div className="App">
-      {snippets.map((snippet) => {
-        return (
-          <div key={snippet.id}>
-            <h2>{snippet.title}</h2>
-            <p>{snippet.code}</p>
-          </div>
-        );
-      })}
+      <Navbar></Navbar>
+      <Routes>
+        <Route path="/" element={<SnippetLists />} />
+        <Route path="/snippet" element={<SnippetLists />} />
+        <Route path="/snippet/:id" element={<Snippet />} />
+      </Routes>
     </div>
   );
 }
