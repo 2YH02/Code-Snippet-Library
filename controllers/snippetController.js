@@ -1,6 +1,9 @@
 const { Snippet } = require("../models/snippetModel");
 const { Author } = require("../models/authorModel");
 
+// Guess the lang
+const detectLang = require("../utils/detectLang");
+
 // Get snippets
 exports.getSnippets = async (_req, res) => {
   try {
@@ -16,7 +19,13 @@ exports.getSnippets = async (_req, res) => {
 // Create snippet
 exports.createSnippet = async (req, res) => {
   try {
-    const { title, code, language, tags, author_id, rating } = req.body;
+    let { title, code, language, tags, author_id, rating } = req.body;
+
+    // If language is none, guess the lang in a simple way.
+    if (!language) {
+      language = detectLang(code);
+    }
+
     const author = await Author.findByPk(author_id);
     const snippet = await Snippet.create({
       title,

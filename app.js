@@ -20,7 +20,7 @@ const checkRequestBody = (req, res, next) => {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+// app.use(express.static("public"));
 app.use(checkRequestBody); // 모든 json body 체크
 
 // Set up routes

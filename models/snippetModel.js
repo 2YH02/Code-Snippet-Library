@@ -4,8 +4,7 @@ const sequelize = new Sequelize(
   config.db.database,
   config.db.user,
   config.db.password,
-  config.db.options,
-  { logging: false }
+  config.db.options
 );
 
 const Snippet = sequelize.define(
@@ -34,7 +33,7 @@ const Snippet = sequelize.define(
     },
     language: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     tags: {
       type: DataTypes.JSON,
@@ -42,7 +41,7 @@ const Snippet = sequelize.define(
     },
     rating: {
       type: DataTypes.FLOAT,
-      defaultValue: 0,
+      defaultValue: 1.0,
     },
   },
   {
