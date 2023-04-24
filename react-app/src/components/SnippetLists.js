@@ -52,22 +52,13 @@ const ProfileName = styled.p`
   text-align: center;
 `;
 
-function SnippetLists() {
+function SnippetLists(props) {
   let navigate = useNavigate();
-
-  const [snippets, setSnippets] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:3000/snippets")
-      .then((res) => res.json())
-      .then((data) => setSnippets(data.body))
-      .catch((error) => console.error(error));
-  }, []);
 
   return (
     <div>
       <Ul>
-        {snippets.map((snippet) => {
+        {props.snippets.map((snippet) => {
           return (
             <Li key={snippet.id}>
               <ProfileBox>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -27,29 +27,51 @@ const P = styled.p`
   margin: 0;
 `;
 
-function Snippet() {
+function Snippet(props) {
+  const navigate = useNavigate();
   let { id } = useParams();
-  const [snippet, setSnippet] = useState([]);
+
+  let snippet = props.snippets.find((v) => {
+    return v.id === Number(id);
+  });
 
   useEffect(() => {
-    fetch("http://localhost:3000/snippets")
-      .then((res) => res.json())
-      .then((data) => {
-        let x = data.body.find((v) => {
-          return v.id === Number(id);
-        });
-        setSnippet(x);
-      })
-      .catch((error) => console.error(error));
-  }, []);
+    function handleKeyDown(e) {
+      let snippetIndex = props.snippets.findIndex((v) => {
+        return v.id === Number(id);
+      });
+
+      if (e.key === "ArrowRight") {
+        let nextPage = props.snippets.find((v, i) => i === snippetIndex + 1);
+        if (nextPage !== undefined) {
+          navigate(`/snippet/${nextPage.id}`);
+          window.location.reload();
+        }
+      }
+
+      if (e.key === "ArrowLeft") {
+        let prevPage = props.snippets.find((v, i) => i === snippetIndex - 1);
+        if (prevPage !== undefined) {
+          navigate(`/snippet/${prevPage.id}`);
+          window.location.reload();
+        }
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  });
 
   return (
     <Container>
       <Title>
-        <H1>{snippet.title}</H1>
+        <H1>{snippet ? snippet.title : null}</H1>
       </Title>
       <Body>
-        <P>{snippet.code}</P>
+        <P>{snippet ? snippet.code : null}</P>
       </Body>
     </Container>
   );

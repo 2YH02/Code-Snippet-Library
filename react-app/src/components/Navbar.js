@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.9);
   color: rgb(230, 230, 230);
-  min-width: 70rem;
+  // min-width: 70rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
