@@ -28,7 +28,11 @@ const P = styled.p`
 const A = styled.a`
   cursor: pointer;
   text-decoration: none;
-  color: inherit;
+  color: rgb(230, 230, 230);
+  &:hover {
+    color: rgb(230, 230, 230);
+    text-shadow: 0.5px 0.5px 2px #ffffff, -1px 0.5px 2.5px #ffffff;
+  }
 `;
 const Box = styled.div`
   display: flex;

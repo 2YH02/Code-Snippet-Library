@@ -4,6 +4,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { SnippetLists } from "./components/SnippetLists";
 import Snippet from "./components/Snippet";
+import Login from "./components/Login";
 
 function App() {
   const [snippets, setSnippets] = useState([]);
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<SnippetLists snippets={snippets} />} />
         <Route path="/snippet" element={<SnippetLists snippets={snippets} />} />
         <Route path="/snippet/:id" element={<Snippet snippets={snippets} />} />
+        <Route path="/login" element={<Login/>}/>
       </Routes>
     </div>
   );

@@ -65,7 +65,13 @@ function Navbar() {
         </div>
         <Ul>
           <Li>
-            <A href="#">로그인</A>
+            <A
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              로그인
+            </A>
           </Li>
         </Ul>
       </Box>
