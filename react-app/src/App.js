@@ -23,7 +23,7 @@ function App() {
         <Route path="/" element={<SnippetLists snippets={snippets} />} />
         <Route path="/snippet" element={<SnippetLists snippets={snippets} />} />
         <Route path="/snippet/:id" element={<Snippet snippets={snippets} />} />
-        <Route path="/login" element={<Login/>}/>
+        <Route path="/login" element={<Login />} />
       </Routes>
     </div>
   );
