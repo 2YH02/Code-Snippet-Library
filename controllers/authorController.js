@@ -45,10 +45,12 @@ exports.updateAuthor = async (req, res) => {
 };
 
 // Delete snippet
-exports.deleteSnippet = async (req, res) => {
+exports.deleteAuthor = async (req, res) => {
   try {
-    const snippet = await Snippet.findByPk(req.params.id);
-    await snippet.destroy();
+    const author = await Author.findOne({
+      where: { email: req.body.email },
+    });
+    await author.destroy();
 
     res.json({ message: "삭제 완료" });
   } catch (err) {

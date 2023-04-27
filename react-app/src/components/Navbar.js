@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "./../store";
+import { googleLogout } from "@react-oauth/google";
 
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.9);
@@ -46,7 +49,42 @@ const Box = styled.div`
 `;
 
 function Navbar() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  let user = useSelector((state) => {
+    return state.user;
+  });
+
+  const fetchData = () => {
+    fetch("http://localhost:3000/authors/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: user.email }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
+  };
+
+  const loginToggle = () => {
+    if (user.isLogin) {
+      fetchData();
+      googleLogout();
+      dispatch(
+        setUser({
+          name: "",
+          email: "",
+          isLogin: false,
+        })
+      );
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <Container>
       <H1>
@@ -65,13 +103,7 @@ function Navbar() {
         </div>
         <Ul>
           <Li>
-            <A
-              onClick={() => {
-                navigate("/login");
-              }}
-            >
-              로그인
-            </A>
+            <A onClick={loginToggle}>{!user.isLogin ? "로그인" : "로그아웃"}</A>
           </Li>
         </Ul>
       </Box>

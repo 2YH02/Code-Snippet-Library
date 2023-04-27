@@ -7,5 +7,6 @@ const authorController = require("../controllers/authorController");
 router.get("/", authorController.getAuthors);
 router.post("/new", authorController.createAuthor);
 router.put("/update", authorController.updateAuthor);
+router.post("/delete", authorController.deleteAuthor);
 
 module.exports = router;

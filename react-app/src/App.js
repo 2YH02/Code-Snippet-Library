@@ -1,12 +1,18 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import Navbar from "./components/Navbar";
 import { SnippetLists } from "./components/SnippetLists";
 import Snippet from "./components/Snippet";
 import Login from "./components/Login";
 
 function App() {
+  let user = useSelector((state) => {
+    return state.user;
+  });
+  // console.log(user);
+
   const [snippets, setSnippets] = useState([]);
 
   useEffect(() => {
