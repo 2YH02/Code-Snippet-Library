@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { SnippetLists } from "./components/SnippetLists";
 import Snippet from "./components/Snippet";
 import Login from "./components/Login";
+import PostPage from "./components/PostPage";
 
 function App() {
   let user = useSelector((state) => {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/snippet" element={<SnippetLists snippets={snippets} />} />
         <Route path="/snippet/:id" element={<Snippet snippets={snippets} />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/post" element={<PostPage />} />
       </Routes>
     </div>
   );
