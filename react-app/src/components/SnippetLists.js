@@ -8,7 +8,7 @@ const Ul = styled.ul`
   margin: 0;
 `;
 const Li = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #FF6600;
   border-radius: 4px;
   width: 50%;
   margin: 20px auto 0 auto;
@@ -19,19 +19,21 @@ const Li = styled.div`
   }
 `;
 const H2 = styled.h2`
-  border-bottom: 1px solid rgb(190, 190, 190);
+  border-bottom: 1px solid #ff983f;
   margin: 0;
 `;
 const P = styled.p`
   margin-bottm: 1rem;
+  color: #FFFFFF;
+  font-weight: bold;
 `;
 const A = styled.a`
   cursor: pointer;
   text-decoration: none;
-  color: rgb(230, 230, 230);
+  color: #FFFFFF;
   &:hover {
-    color: rgb(230, 230, 230);
-    text-shadow: 0.5px 0.5px 2px #ffffff, -1px 0.5px 2.5px #ffffff;
+    color: #FFFFFF;
+    // text-shadow: 0.5px 0.5px 2px #ffffff, -1px 0.5px 2.5px #ffffff;
   }
 `;
 const Box = styled.div`
@@ -40,7 +42,7 @@ const Box = styled.div`
   justify-content: center;
 `;
 const ProfileBox = styled(Box)`
-  border-right: 1px solid rgb(190, 190, 190);
+  border-right: 1px solid #ff983f;
   margin: 1rem 0 1rem 0;
 `;
 const TextBox = styled(Box)`
@@ -54,6 +56,7 @@ const ProfileImg = styled.img`
 `;
 const ProfileName = styled.p`
   text-align: center;
+  color: #FFFFFF;
 `;
 
 function SnippetLists(props) {

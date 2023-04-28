@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node app.js",
+    "start": "set PORT=8123 && node app.js",
     "watch": "nodemon -w ./app.js --exec npm run start"
   },
   "dependencies": {

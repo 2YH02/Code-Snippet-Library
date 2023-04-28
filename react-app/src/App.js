@@ -12,11 +12,10 @@ function App() {
     return state.user;
   });
   // console.log(user);
-
   const [snippets, setSnippets] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/snippets")
+    fetch("http://localhost:8123/snippets")
       .then((res) => res.json())
       .then((data) => setSnippets(data.body))
       .catch((error) => console.error(error));

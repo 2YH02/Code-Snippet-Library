@@ -57,7 +57,7 @@ function Navbar() {
   });
 
   const fetchData = () => {
-    fetch("http://localhost:3000/authors/delete", {
+    fetch("http://localhost:8123/authors/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
