@@ -16,6 +16,20 @@ exports.getSnippets = async (_req, res) => {
   }
 };
 
+// Get snippets by id
+exports.getSnippetsById = async (req, res) => {
+  try {
+    const snippets = await Snippet.findAll({
+      where: { author_id: req.params.id },
+    });
+
+    res.json({ body: snippets });
+  } catch (error) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
 // Create snippet
 exports.createSnippet = async (req, res) => {
   try {

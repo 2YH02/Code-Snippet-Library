@@ -15,16 +15,21 @@ exports.getAuthors = async (_req, res) => {
 
 // Create author
 exports.createAuthor = async (req, res) => {
-  try {
-    await Author.create({
-      name: req.body.name,
-      email: req.body.email,
-    });
+  const author = await Author.findOne({
+    where: { email: req.body.email },
+  });
+  if (!author) {
+    try {
+      await Author.create({
+        name: req.body.name,
+        email: req.body.email,
+      });
 
-    res.json({ message: "Author 생성 완료" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
+      res.json({ message: "Author 생성 완료" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server Error");
+    }
   }
 };
 

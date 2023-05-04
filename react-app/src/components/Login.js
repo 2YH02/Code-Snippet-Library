@@ -105,7 +105,7 @@ function Login() {
   // };
 
   const getLogin = (details) => {
-    fetch("http://localhost:3000/authors/new", {
+    fetch("http://localhost:8123/authors/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -196,7 +196,7 @@ function Login() {
       <ButtonBox>
         <Button
           disabled={notAllow}
-          //  onClick={confirmButton}
+        //  onClick={confirmButton}
         >
           로그인
         </Button>
@@ -204,7 +204,7 @@ function Login() {
           <GoogleLogin
             onSuccess={(credentialResponse) => {
               const details = jwt_decode(credentialResponse.credential);
-              // console.log(details);
+              console.log(details);
               setEmail(details.email);
               setName(details.name);
               // console.log(User);
