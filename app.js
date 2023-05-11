@@ -4,6 +4,7 @@ const app = express();
 const config = require("./config");
 const snippetRoutes = require("./routes/snippetRoutes");
 const authorRoutes = require("./routes/authorRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const checkRequestBody = (req, res, next) => {
   if (req.method === "POST") {
@@ -26,6 +27,7 @@ app.use(checkRequestBody); // 모든 json body 체크
 // Set up routes
 app.use("/snippets", snippetRoutes);
 app.use("/authors", authorRoutes); // /authors/new 이런 식
+app.use(authRoutes);
 
 // Start server
 app.listen(config.port, () => {
