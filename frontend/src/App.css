@@ -1,0 +1,265 @@
+/* .App {
+  text-align: center;
+} */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #303030;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.video-bg {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.main-page {
+  background-color: rgba(20, 20, 20, 0.7);
+  max-width: 1250px;
+  max-height: 860px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  border-radius: 1rem;
+  /* backdrop-filter: blur(15px); */
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.main-page::-webkit-scrollbar {
+  display: none;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  height: 3.5rem;
+  width: 100%;
+  border-bottom: 1px solid rgba(100, 100, 100, 0.7);
+  white-space: nowrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  margin-left: 2rem;
+  height: 100%;
+  padding: 0 1rem 0 1rem;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logo:hover {
+  text-shadow: 0 0 1px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #c6abc2,
+    0 0 70px #c6abc2, 0 0 80px #c6abc2, 0 0 100px #c6abc2, 0 0 150px #c6abc2;
+}
+
+.header .link {
+  padding: 1rem 2rem;
+  text-decoration: none;
+  color: rgba(172, 166, 166, 0.7);
+  border-bottom: 2px solid transparent;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.header .link:hover,
+.header .link.is-active {
+  border-bottom: 2px solid white;
+  color: white;
+}
+
+.search-bar {
+  height: 2rem;
+  display: flex;
+  width: 100%;
+  padding-left: 1rem;
+  border-radius: 4px;
+}
+
+.nav-input {
+  height: 100%;
+  width: 100%;
+  border: none;
+  background-color: rgba(20, 15, 29, 0.5);
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.nav-input::-webkit-input-placeholder {
+  background-image: url("../public/search.png");
+  background-size: contain;
+  background-position: 1px center;
+  background-repeat: no-repeat;
+  text-align: center;
+  text-indent: 0;
+}
+
+.nav-input:focus {
+  background-image: none;
+  background-position: -10px center;
+  text-indent: 0;
+  /* width: 50%; */
+}
+
+.profile-container {
+  position: relative;
+  padding: 0 1.5rem 0 0.7rem;
+}
+
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+}
+
+.profile-name {
+  padding: 0 9px;
+}
+
+.profile-btn {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-btn > div:first-child {
+  position: absolute;
+  background-color: white;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 20%;
+  transition: width 0.2s 0.2s, height 0.2s, left 0.2s 0.2s, right 0.2s 0.2s;
+}
+
+.profile-btn > div:nth-of-type(2) {
+  position: absolute;
+  background-color: white;
+  top: 40%;
+  left: auto;
+  right: auto;
+  width: 100%;
+  height: 20%;
+  transition: all 0.4s;
+}
+
+.profile-btn > div:nth-of-type(3) {
+  position: absolute;
+  background-color: white;
+  top: 80%;
+  left: auto;
+  right: auto;
+  width: 100%;
+  height: 20%;
+  transition: all 0.4s;
+}
+
+.profile-btn.isActive > div:first-child {
+  position: absolute;
+  background-color: white;
+  left: 40%;
+  right: 40%;
+  top: 0;
+  width: 20%;
+  height: 100%;
+  transition: width 0.2s, height 0.2s 0.2s, left 0.2s, right 0.2s;
+}
+
+.profile-btn.isActive > div:nth-of-type(2) {
+  position: absolute;
+  background-color: white;
+  top: 40%;
+  right: 0;
+  width: 70%;
+  height: 20%;
+  transform: rotate(-45deg);
+  transform-origin: bottom right;
+}
+
+.profile-btn.isActive > div:nth-of-type(3) {
+  position: absolute;
+  background-color: white;
+  top: 40%;
+  width: 70%;
+  height: 20%;
+  transform: rotate(45deg);
+  transform-origin: bottom left;
+}
+
+.my-modal {
+  background-color: rgb(40, 40, 40);
+  border-radius: 4px;
+  position: absolute;
+  right: 10%;
+  top: 90%;
+  padding: 5px 10px;
+  outline: none;
+}
+
+.my-modal a {
+  display: inline-block;
+  padding: 15px;
+  width: 100%;
+  cursor: pointer;
+  outline: none;
+}
+
+.my-modal li {
+  margin-bottom: 3px;
+  outline: none;
+}
+
+.my-modal li:hover {
+  background-color: black;
+  border-radius: 4px;
+}
+
+.main-content {
+  /* border: 1px solid yellow; */
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  height: calc(100% - 58px);
+}
