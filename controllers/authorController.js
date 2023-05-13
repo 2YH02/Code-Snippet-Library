@@ -23,6 +23,7 @@ exports.createAuthor = async (req, res) => {
       await Author.create({
         name: req.body.name,
         email: req.body.email,
+        access_token: req.body.access_token,
       });
 
       res.json({ message: "Author 생성 완료" });
@@ -30,6 +31,8 @@ exports.createAuthor = async (req, res) => {
       console.error(err);
       res.status(500).send("Server Error");
     }
+  } else {
+    res.json({ message: "갱신" });
   }
 };
 
