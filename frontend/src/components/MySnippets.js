@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Loading from "./Loading";
-import styled, { keyframes } from "styled-components";
-import data from "../data";
+import { NotFound } from "./NotFound";
+import styled from "styled-components";
 
 const LoadingWrap = styled.div`
   // border: 1px solid red;
@@ -90,41 +90,41 @@ const Card = styled.div`
     box-shadow: rgba(255, 255, 255, 0.35) 0px 5px 15px;
   }
 `;
-
-const AllSnippets = (props) => {
+const MySnippets = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
+  const [user, setUser] = useState({});
   const [snippets, setSnippets] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8123/snippets")
+    const localUser = JSON.parse(localStorage.getItem("account"));
+    if (localUser === null || localUser.isLogin === false) {
+      navigate("/login");
+    } else {
+      if (localUser.id !== Number(id)) {
+        navigate("/");
+      } else {
+        setUser(localUser);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:8123/snippets/author/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data.body);
         setSnippets(data.body);
       })
       .catch((error) => console.error(error));
   }, []);
 
-  // console.log(snippets);
-
-  const [active, setActive] = useState([]);
-  const [fade, setFade] = useState("");
-
-  useEffect(() => {
-    setTimeout(() => {
-      setFade("end");
-    }, 100);
-    return () => {
-      setFade("");
-    };
-  }, [data]);
-
+  //   console.log(snippets);
   return (
     <>
       {snippets.length > 0 ? (
         <Container>
-          {/* {data.map((v, i) => {
+          {snippets.map((v, i) => {
             return (
               <Card
                 key={i}
@@ -140,23 +140,6 @@ const AllSnippets = (props) => {
                 </div>
               </Card>
             );
-          })} */}
-          {snippets.map((v, i) => {
-            return (
-              <Card
-                key={i}
-                onClick={() => {
-                  navigate(`/snippets/${v.id}`);
-                }}
-              >
-                <h3 className="title">{v.title}</h3>
-                <p className="description">{v.description}</p>
-                <div>
-                  <p className="name">{v.author_id}</p>
-                  <p className="language">{v.language}</p>
-                </div>
-              </Card>
-            );
           })}
         </Container>
       ) : (
@@ -168,4 +151,4 @@ const AllSnippets = (props) => {
   );
 };
 
-export default AllSnippets;
+export default MySnippets;

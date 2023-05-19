@@ -19,6 +19,10 @@ const Snippet = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
     code: {
       type: DataTypes.TEXT,
       allowNull: false,

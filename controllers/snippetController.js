@@ -8,7 +8,7 @@ const detectLang = require("../utils/detectLang");
 exports.getSnippets = async (_req, res) => {
   try {
     const snippets = await Snippet.findAll({});
-
+    
     res.json({ body: snippets });
   } catch (err) {
     console.error(err);
@@ -16,8 +16,8 @@ exports.getSnippets = async (_req, res) => {
   }
 };
 
-// Get snippets by id
-exports.getSnippetsById = async (req, res) => {
+// Get snippets by author_id
+exports.getSnippetsByAuthorId = async (req, res) => {
   try {
     const snippets = await Snippet.findAll({
       where: { author_id: req.params.id },
@@ -30,10 +30,25 @@ exports.getSnippetsById = async (req, res) => {
   }
 };
 
+// Get snippets by id
+exports.getSnippetsById = async (req, res) => {
+  try {
+    const snippets = await Snippet.findOne({
+      where: { id: req.params.id },
+    });
+
+    res.json({ body: snippets });
+  } catch (error) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
 // Create snippet
 exports.createSnippet = async (req, res) => {
   try {
-    let { title, code, language, tags, author_id, rating } = req.body;
+    let { title, description, code, language, tags, author_id, rating } =
+      req.body;
 
     // If language is none, guess the lang in a simple way.
     if (!language) {
@@ -43,6 +58,7 @@ exports.createSnippet = async (req, res) => {
     const author = await Author.findByPk(author_id);
     const snippet = await Snippet.create({
       title,
+      description,
       code,
       language,
       tags,

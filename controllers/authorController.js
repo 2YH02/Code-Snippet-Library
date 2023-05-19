@@ -13,6 +13,20 @@ exports.getAuthors = async (_req, res) => {
   }
 };
 
+// Get author by id
+exports.getAuthorById = async (req, res) => {
+  try {
+    const author = await Author.findOne({
+      where: { id: req.params.id },
+    });
+
+    res.json({ body: author });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
 // Create author
 exports.createAuthor = async (req, res) => {
   const author = await Author.findOne({
@@ -20,19 +34,18 @@ exports.createAuthor = async (req, res) => {
   });
   if (!author) {
     try {
-      await Author.create({
+      const createdAuthor = await Author.create({
         name: req.body.name,
         email: req.body.email,
         access_token: req.body.access_token,
       });
-
-      res.json({ message: "Author 생성 완료" });
+      res.json(createdAuthor);
     } catch (err) {
       console.error(err);
       res.status(500).send("Server Error");
     }
   } else {
-    res.json({ message: "갱신" });
+    res.json(author);
   }
 };
 

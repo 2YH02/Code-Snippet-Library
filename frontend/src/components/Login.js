@@ -2,8 +2,32 @@ import styled from "styled-components";
 import { useGoogleLogin, googleLogout } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import Loading from "./Loading";
 import { useEffect, useState } from "react";
+
+const LoadingWrap = styled.div`
+  // border: 1px solid red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const Main = styled.div`
+  // border: 1px solid blue;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+`;
 const Container = styled.div`
+  // border: 1px solid red;
+  width: 70%;
   text-align: center;
 `;
 const Title = styled.div`
@@ -72,9 +96,24 @@ const Box = styled.div`
   left: 50%;
   transform: translate(-50%, 0);
 `;
+const GoogleBtn = styled.button`
+  color: inherit;
+  padding: 0.5rem 1rem;
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 2px;
+  margin: 0 10px;
+  cursor: pointer;
+  &:hover {
+    color: rgb(244, 244, 244);
+    text-shadow: 1px 1px 8px #ffffff, -1px 1px 5px #ffffff;
+  }
+`;
 
 const LoginPage = (props) => {
   const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("account"));
@@ -98,6 +137,7 @@ const LoginPage = (props) => {
       })
         .then((res) => res.json())
         .then((data) => {
+          setIsLoading(false);
           const details = jwt_decode(data.id_token);
           // console.log(details);
           // console.log(data);
@@ -112,20 +152,23 @@ const LoginPage = (props) => {
               access_token: data.access_token,
             }),
           })
-            .then((response) => response.json())
-            .then((data) => console.log(data))
-            .catch((error) => console.error(error));
-          localStorage.setItem(
-            "account",
-            JSON.stringify({
-              name: details.name,
-              email: details.email,
-              photo: details.picture,
-              isLogin: true,
+            .then((res) => res.json())
+            .then((data) => {
+              localStorage.setItem(
+                "account",
+                JSON.stringify({
+                  id: data.id,
+                  name: details.name,
+                  email: details.email,
+                  photo: details.picture,
+                  isLogin: true,
+                })
+              );
+              setIsLoading(true);
+              navigate("/");
+              window.location.reload();
             })
-          );
-          navigate("/");
-          window.location.reload();
+            .catch((error) => console.error(error));
         })
         .catch((error) => {
           console.error(error);
@@ -172,55 +215,67 @@ const LoginPage = (props) => {
   };
 
   return (
-    <Container>
-      <Title>로그인</Title>
+    <>
+      {isLoading ? (
+        <Main>
+          <Container>
+            <Title>로그인</Title>
 
-      <Content>
-        <InputTitle>이메일 주소</InputTitle>
-        <InputWrap>
-          <Input
-            className="input"
-            type="email"
-            placeholder="Enter email"
-            // value={email}
-            onChange={handleEmail}
-          />
-        </InputWrap>
-        <ErrorMessage>
-          {!emailValid && email.length > 0 && (
-            <div>올바른 이메일을 입력해주세요.</div>
-          )}
-        </ErrorMessage>
+            <Content>
+              <InputTitle>이메일 주소</InputTitle>
+              <InputWrap>
+                <Input
+                  className="input"
+                  type="email"
+                  placeholder="Enter email"
+                  // value={email}
+                  onChange={handleEmail}
+                />
+              </InputWrap>
+              <ErrorMessage>
+                {!emailValid && email.length > 0 && (
+                  <div>올바른 이메일을 입력해주세요.</div>
+                )}
+              </ErrorMessage>
 
-        <InputTitle style={{ marginTop: "26px" }}>비밀번호</InputTitle>
-        <InputWrap>
-          <Input
-            className="input"
-            type="password"
-            placeholder="Password"
-            value={pw}
-            onChange={handlePassword}
-          />
-        </InputWrap>
-        <ErrorMessage>
-          {!pwValid && pw.length > 0 && (
-            <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요</div>
-          )}
-        </ErrorMessage>
-      </Content>
+              <InputTitle style={{ marginTop: "26px" }}>비밀번호</InputTitle>
+              <InputWrap>
+                <Input
+                  className="input"
+                  type="password"
+                  placeholder="Password"
+                  value={pw}
+                  onChange={handlePassword}
+                />
+              </InputWrap>
+              <ErrorMessage>
+                {!pwValid && pw.length > 0 && (
+                  <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요</div>
+                )}
+              </ErrorMessage>
+            </Content>
 
-      <ButtonBox>
-        <Button
-          disabled={notAllow}
-          //  onClick={confirmButton}
-        >
-          로그인
-        </Button>
-        <Box>
-          <button onClick={() => googleLogin()}>Sign in with Google 🚀 </button>
-        </Box>
-      </ButtonBox>
-    </Container>
+            <ButtonBox>
+              <Button
+                disabled={notAllow}
+                //  onClick={confirmButton}
+              >
+                로그인
+              </Button>
+              <Box>
+                <GoogleBtn onClick={() => googleLogin()}>
+                  Sign in with Google 🚀{" "}
+                </GoogleBtn>
+              </Box>
+            </ButtonBox>
+          </Container>
+        </Main>
+      ) : (
+        <LoadingWrap>
+          <Loading />
+        </LoadingWrap>
+      )}
+    </>
   );
 };
 
