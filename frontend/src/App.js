@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, Routes, Route, Link } from "react-router-dom";
 import styled from "styled-components";
 import LoginPage from "./components/Login";
@@ -14,20 +14,8 @@ import { NotFound } from "./components/NotFound";
 
 const MainLogo = styled.div`
   // border: 1px solid red;
-  position: relative;
-  & span {
-    position: absolute;
-  }
-  & span:first-of-type {
-    // border: 1px solid blue;
-    top: 5px;
-    left: 10px;
-  }
-  & span:nth-of-type(2) {
-    // border: 1px solid green;
-    bottom: 5px;
-    right: 10px;
-  }
+  display: flex;
+  flex-direction: column;
 `;
 const Profile = styled.div`
   display: flex;
@@ -77,18 +65,36 @@ function App() {
     }
   }, []);
 
+  const emptyRef = useRef(null);
+  const inputBoxRef = useRef(null);
+  const inputRef = useRef(null);
+  const focusHandler = () => {
+    if (window.innerWidth > 830) {
+      emptyRef.current.style.flex = "-1";
+      inputBoxRef.current.style.flex = "3 1 100%";
+      inputRef.current.style.width = "100%";
+    } else {
+      emptyRef.current.style.flex = "-1";
+      inputBoxRef.current.style.flex = "700 1 100%";
+      inputRef.current.style.width = "100%";
+    }
+  };
+  const blurHandler = () => {
+    if (window.innerWidth > 830) {
+      emptyRef.current.style.flex = "3";
+      inputBoxRef.current.style.flex = "1";
+      inputRef.current.style.width = "350px";
+    } else {
+      emptyRef.current.style.flex = "-1";
+      inputBoxRef.current.style.flex = "700 1 100%";
+      inputRef.current.style.width = "100%";
+    }
+  };
+
   // console.log(user);
 
   return (
     <div className="App">
-      {/* 배경화면 */}
-      {/* <div className="video-bg">
-        <video muted autoPlay loop>
-          <source src="/main-bg.mp4" type="video/mp4" />
-          <strong>Your browser does not support the video tag.</strong>
-        </video>
-      </div> */}
-
       {/* 메인페이지 */}
       <div className="main-page">
         {/* 내비게이션 바 */}
@@ -110,11 +116,15 @@ function App() {
               코드생성
             </Link>
           </div>
-          <div className="search-bar">
+          <div className="empty" ref={emptyRef}></div>
+          <div className="search-bar" ref={inputBoxRef}>
             <input
               type="text"
               placeholder="Search"
               className="nav-input"
+              ref={inputRef}
+              onFocus={focusHandler}
+              onBlur={blurHandler}
             ></input>
           </div>
 
@@ -162,6 +172,7 @@ function App() {
                       <a
                         className="login-btn"
                         onClick={() => {
+                          navigate("/");
                           localStorage.removeItem("account");
                           window.location.reload();
                         }}
@@ -175,7 +186,8 @@ function App() {
             </div>
           ) : (
             <a
-              className="login-btn link"
+              className="link"
+              id="login-btn"
               onClick={() => {
                 navigate("/login");
               }}

@@ -4,13 +4,13 @@ import { ClipLoader, RotateLoader } from "react-spinners";
 const override = {
   display: "block",
   margin: "0 auto",
-  borderColor: "#E50915",
+  borderColor: "#9b635a",
 };
 
 const Loading = ({ loading }) => {
   return (
     <RotateLoader
-      color="#EEE"
+      color="#ce9187"
       loading={loading}
       cssOverride={override}
       size={10}

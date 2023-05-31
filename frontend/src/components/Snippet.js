@@ -1,10 +1,21 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import {
+  funky, // 배경 검
+  tomorrow, // 주 노 초
+  coldarkDark, // 파 초
+  darcula, // 회 초 깔끔
+  prism, // 화이트
+  synthwave84, // 형광 보라 배경 빨 파
+  xonokai,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
+import codeprism from "../styles/codeprism";
 import data from "../data";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 
 const Container = styled.div`
-  //   border: 1px solid red;
+  // border: 1px solid red;
   width: 80%;
   margin: 2rem auto;
   height: calc(100% - 4rem);
@@ -14,6 +25,10 @@ const Container = styled.div`
   overflow: hidden;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
     rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+  }
 `;
 const CodeWrap = styled.div`
   //   border: 1px solid blue;
@@ -21,6 +36,9 @@ const CodeWrap = styled.div`
   justify-content: center;
   align-items: center;
   width: 50%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const InfoWrap = styled.div`
   //   border: 1px solid green;
@@ -28,19 +46,26 @@ const InfoWrap = styled.div`
   justify-content: center;
   align-items: center;
   width: 50%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const Code = styled.div`
   //   border: 1px solid gold;
-  background-color: black;
-  padding: 3rem 1.5rem;
+  background-color: #333333;
+  padding: 3rem 1rem;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   word-wrap: break-word;
   white-space: pre-wrap;
 `;
 const Info = styled.div`
   // border: 1px solid gold;
-  background-color: rgba(40, 40, 40, 0.5);
+  color: #333333;
+  background-color: #c4c4c4;
   width: 100%;
   height: 100%;
   word-wrap: break-word;
@@ -62,12 +87,13 @@ const Info = styled.div`
         rgba(255, 255, 255, 0.62) 0px 2px 4px;
     }
     & button {
-      border: 1px solid white;
+      border: none;
       border-radius: 1rem;
       padding: 5px 10px;
-      background-color: transparent;
+      background-color: #ce9187;
       color: rgb(230, 230, 230);
       cursor: pointer;
+      margin-left: 10px;
       &:hover {
         box-shadow: rgba(255, 255, 255, 0.25) 0px 14px 28px,
           rgba(255, 255, 255, 0.22) 0px 10px 10px;
@@ -116,7 +142,7 @@ const Info = styled.div`
       align-items: center;
       padding: 1rem;
       border-radius: 25px;
-      background-color: rgb(200, 200, 200);
+      background-color: #f7f7f7;
       cursor: pointer;
       &:focus-within {
         background-color: white;
@@ -124,7 +150,7 @@ const Info = styled.div`
     }
     & #comment-input {
       width: 100%;
-      background-color: rgb(200, 200, 200);
+      background-color: #f7f7f7;
       cursor: pointer;
       border: none;
       outline: none;
@@ -139,15 +165,17 @@ const Info = styled.div`
 `;
 
 const Snippet = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [snippet, setSnippet] = useState({});
   const [author, setAuthor] = useState({});
-
+  const [user, setUser] = useState({});
   useEffect(() => {
     fetch(`http://localhost:8123/snippets/${id}`)
       .then((res) => res.json())
       .then((data) => {
+        // console.log(data);
         setSnippet(data.body);
       })
       .catch((error) => console.error(error));
@@ -165,10 +193,43 @@ const Snippet = () => {
   }, [snippet]);
   // console.log(snippet);
 
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("account"));
+    setUser(userData);
+  }, []);
+
+  const deleteHandler = () => {
+    fetch(`http://localhost:8123/snippets/delete/${snippet.id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (res.ok) {
+          console.log("삭제 완료");
+          navigate("/snippets");
+        } else {
+          console.log("삭제 실패");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <Container>
       <CodeWrap>
-        <Code>{snippet.code}</Code>
+        <Code>
+          <SyntaxHighlighter
+            language="javascript"
+            style={tomorrow}
+            customStyle={{
+              backgroundColor: "#333333",
+              flex: "1",
+            }}
+          >
+            {snippet.code}
+          </SyntaxHighlighter>
+        </Code>
       </CodeWrap>
       <InfoWrap>
         <Info>
@@ -179,6 +240,9 @@ const Snippet = () => {
             </div>
             <div>
               <span>
+                {user.id === snippet.author_id ? (
+                  <button onClick={deleteHandler}>삭제</button>
+                ) : null}
                 <button>저장</button>
               </span>
             </div>

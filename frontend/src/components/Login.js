@@ -34,7 +34,7 @@ const Title = styled.div`
   margin-top: 87px;
   font-size: 26px;
   font-weight: bold;
-  color: white;
+  color: #333333;
 `;
 const Content = styled.div`
   margin-top: 26px;
@@ -77,9 +77,9 @@ const Button = styled.button`
   height: 48px;
   border: 1px solid white;
   font-weight: 700;
-  background-color: black;
+  background-color: #ce9187;
   border-radius: 64px;
-  color: white;
+  color: #5c5c5c;
   margin: 30px 0 10px 0;
   cursor: pointer;
   &:disabled {
@@ -97,15 +97,15 @@ const Box = styled.div`
   transform: translate(-50%, 0);
 `;
 const GoogleBtn = styled.button`
-  color: inherit;
+  color: #5c5c5c;
   padding: 0.5rem 1rem;
-  background-color: black;
-  border: 1px solid white;
+  background-color: #fff5e9;
+  border: 1px solid #ce9187;
   border-radius: 2px;
   margin: 0 10px;
   cursor: pointer;
   &:hover {
-    color: rgb(244, 244, 244);
+    color: #333333;
     text-shadow: 1px 1px 8px #ffffff, -1px 1px 5px #ffffff;
   }
 `;
@@ -165,8 +165,8 @@ const LoginPage = (props) => {
                 })
               );
               setIsLoading(true);
-              navigate("/");
               window.location.reload();
+              navigate("/");
             })
             .catch((error) => console.error(error));
         })

@@ -35,6 +35,10 @@ const Snippet = sequelize.define(
         key: "author_id",
       },
     },
+    author_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     language: {
       type: DataTypes.STRING,
       allowNull: true,

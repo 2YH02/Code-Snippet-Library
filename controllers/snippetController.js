@@ -8,7 +8,7 @@ const detectLang = require("../utils/detectLang");
 exports.getSnippets = async (_req, res) => {
   try {
     const snippets = await Snippet.findAll({});
-    
+
     res.json({ body: snippets });
   } catch (err) {
     console.error(err);
@@ -44,11 +44,45 @@ exports.getSnippetsById = async (req, res) => {
   }
 };
 
+// Get snippets by 6
+exports.getSnippetsBySix = async (req, res) => {
+  const page = req.query.page || 1; // 페이지 번호, 기본값은 1
+  const itemsPerPage = 6; // 한 페이지당 보여줄 상품 수
+
+  try {
+    // 상품 데이터 조회
+    const snippets = await Snippet.findAll({
+      order: [["id", "DESC"]],
+      limit: itemsPerPage,
+      offset: (page - 1) * itemsPerPage,
+      // include: [
+      //   {
+      //     model: Author,
+      //     attributes: ["name"],
+      //   },
+      // ],
+    });
+
+    res.json(snippets);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 // Create snippet
 exports.createSnippet = async (req, res) => {
   try {
-    let { title, description, code, language, tags, author_id, rating } =
-      req.body;
+    let {
+      title,
+      description,
+      code,
+      language,
+      tags,
+      author_id,
+      author_name,
+      rating,
+    } = req.body;
 
     // If language is none, guess the lang in a simple way.
     if (!language) {
@@ -63,6 +97,7 @@ exports.createSnippet = async (req, res) => {
       language,
       tags,
       author_id,
+      author_name,
       rating,
     });
 
