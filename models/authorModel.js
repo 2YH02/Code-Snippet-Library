@@ -23,6 +23,14 @@ const Author = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    img: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    follow: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     access_token: {
       type: DataTypes.STRING,
       allowNull: false,

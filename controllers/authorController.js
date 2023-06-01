@@ -37,6 +37,8 @@ exports.createAuthor = async (req, res) => {
       const createdAuthor = await Author.create({
         name: req.body.name,
         email: req.body.email,
+        img: null,
+        follow: 0,
         access_token: req.body.access_token,
       });
       res.json(createdAuthor);
@@ -52,11 +54,12 @@ exports.createAuthor = async (req, res) => {
 // Update author
 exports.updateAuthor = async (req, res) => {
   try {
-    const { name, mail, author_id } = req.body;
+    const { name, mail, img, follow, author_id } = req.body;
     const author = await Author.findByPk(author_id);
-    author.name = name;
-    author.mail = mail;
-    await author.save();
+    if (author.name !== name) {
+      author.name = name;
+      await author.save();
+    }
 
     res.json({ message: "Author 업데이트 완료" });
   } catch (err) {
@@ -74,6 +77,23 @@ exports.deleteAuthor = async (req, res) => {
     await author.destroy();
 
     res.json({ message: "삭제 완료" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
+// Upload image file
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, mail, img, follow, author_id } = req.body;
+    const author = await Author.findByPk(author_id);
+    if (author.img !== img) {
+      author.img = img;
+      await author.save();
+    }
+
+    res.json({ message: "Author 업데이트 완료" });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");

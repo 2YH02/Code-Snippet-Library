@@ -61,6 +61,13 @@ function App() {
       copy.isLogin = false;
       setUser(copy);
     } else {
+      // fetch(`http://localhost:8123/authors/${data.id}`)
+      //   .then((res) => res.json())
+      //   .then((data) => {
+      //     console.log(data);
+      //     setUser(data);
+      //   })
+      //   .catch((error) => console.error(error));
       setUser(data);
     }
   }, []);
@@ -131,7 +138,14 @@ function App() {
           {user.isLogin ? (
             <div className="profile-container">
               <div className="profile">
-                <img src={"/user.png"} className="profile-img"></img>
+                <img
+                  src={
+                    user.photo
+                      ? `http://localhost:8123/authors/profile/${user.photo}`
+                      : "user.png"
+                  }
+                  className="profile-img"
+                ></img>
                 <p className="profile-name">{user.name}</p>
                 <div
                   className={`profile-btn ${isActive}`}
@@ -229,17 +243,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <div>
-              <a
-                className="login-btn"
-                onClick={() => {
-                  localStorage.removeItem("account");
-                  window.location.reload();
-                }}
-              >
-                로그아웃
-              </a>
-            </div> */
-}

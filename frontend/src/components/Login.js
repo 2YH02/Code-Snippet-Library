@@ -158,9 +158,9 @@ const LoginPage = (props) => {
                 "account",
                 JSON.stringify({
                   id: data.id,
-                  name: details.name,
+                  name: data.name,
                   email: details.email,
-                  photo: details.picture,
+                  photo: data.img,
                   isLogin: true,
                 })
               );
