@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const { Author } = require("./authorModel");
 const config = require("../config.js");
 const sequelize = new Sequelize(
   config.db.database,
@@ -31,13 +32,9 @@ const Snippet = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "Author",
-        key: "author_id",
+        model: "authors",
+        key: "id",
       },
-    },
-    author_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     language: {
       type: DataTypes.STRING,
@@ -60,4 +57,5 @@ const Snippet = sequelize.define(
   }
 );
 
+Snippet.belongsTo(Author, { foreignKey: "author_id" });
 module.exports = { Snippet };

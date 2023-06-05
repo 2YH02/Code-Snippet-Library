@@ -151,6 +151,7 @@ const MySnippets = () => {
     fetch(`http://localhost:8123/snippets/author/${localUser.id}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data.body);
         setSnippets(data.body);
         setLoading(false);
       })
@@ -209,9 +210,7 @@ const MySnippets = () => {
                 <h3 className="title">{v.title}</h3>
                 <p className="language">{v.language}</p>
                 <div className="empty"></div>
-                <p className="name">
-                  {v.author_name ? v.author_name : "이름없음"}
-                </p>
+                <p className="name">{v.author.name}</p>
               </Info>
             </CardWrap>
           </CardWrapContainer>

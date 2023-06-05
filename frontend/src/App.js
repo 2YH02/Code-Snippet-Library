@@ -142,7 +142,7 @@ function App() {
                   src={
                     user.photo
                       ? `http://localhost:8123/authors/profile/${user.photo}`
-                      : "user.png"
+                      : "/user.png"
                   }
                   className="profile-img"
                 ></img>
@@ -186,9 +186,9 @@ function App() {
                       <a
                         className="login-btn"
                         onClick={() => {
-                          navigate("/");
                           localStorage.removeItem("account");
                           window.location.reload();
+                          navigate("/");
                         }}
                       >
                         로그아웃

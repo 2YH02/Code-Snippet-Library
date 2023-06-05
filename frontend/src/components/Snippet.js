@@ -105,7 +105,8 @@ const Info = styled.div`
     display: flex;
     align-items: center;
     & > img {
-      width: 10%;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       margin-right: 1rem;
     }
@@ -248,7 +249,13 @@ const Snippet = () => {
             </div>
           </div>
           <div id="user-info">
-            <img src="https://picsum.photos/200"></img>
+            <img
+              src={
+                author.img
+                  ? `http://localhost:8123/authors/profile/${author.img}`
+                  : "/user.png"
+              }
+            ></img>
             <p>{author.name}</p>
           </div>
           <div id="title">{snippet.title}</div>

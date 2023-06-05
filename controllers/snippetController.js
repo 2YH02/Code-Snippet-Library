@@ -21,6 +21,12 @@ exports.getSnippetsByAuthorId = async (req, res) => {
   try {
     const snippets = await Snippet.findAll({
       where: { author_id: req.params.id },
+      include: [
+        {
+          model: Author,
+          attributes: ["name"],
+        },
+      ],
     });
 
     res.json({ body: snippets });
@@ -55,12 +61,12 @@ exports.getSnippetsBySix = async (req, res) => {
       order: [["id", "DESC"]],
       limit: itemsPerPage,
       offset: (page - 1) * itemsPerPage,
-      // include: [
-      //   {
-      //     model: Author,
-      //     attributes: ["name"],
-      //   },
-      // ],
+      include: [
+        {
+          model: Author,
+          attributes: ["name"],
+        },
+      ],
     });
 
     res.json(snippets);

@@ -126,6 +126,7 @@ const LoginPage = (props) => {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
+      setIsLoading(false);
       fetch("http://localhost:8123/auth/google", {
         method: "POST",
         headers: {
@@ -137,7 +138,6 @@ const LoginPage = (props) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          setIsLoading(false);
           const details = jwt_decode(data.id_token);
           // console.log(details);
           // console.log(data);
@@ -164,9 +164,9 @@ const LoginPage = (props) => {
                   isLogin: true,
                 })
               );
-              setIsLoading(true);
-              window.location.reload();
               navigate("/");
+              window.location.reload();
+              setIsLoading(true);
             })
             .catch((error) => console.error(error));
         })

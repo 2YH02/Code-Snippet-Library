@@ -305,9 +305,7 @@ const AllSnippets = (props) => {
                       <h3 className="title">{v.title}</h3>
                       <p className="language">{v.language}</p>
                       <div className="empty"></div>
-                      <p className="name">
-                        {v.author_name ? v.author_name : "이름없음"}
-                      </p>
+                      <p className="name">{v.author.name}</p>
                     </Info>
                   </CardWrap>
                 </CardWrapContainer>

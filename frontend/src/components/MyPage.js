@@ -411,7 +411,7 @@ function Modal({ id, setPromo, user }) {
                     ? imgUrl
                     : user.photo
                     ? `http://localhost:8123/authors/profile/${user.photo}`
-                    : "user.png"
+                    : "/user.png"
                 }
                 // onClick={clickImg}
                 style={{ cursor: "pointer" }}

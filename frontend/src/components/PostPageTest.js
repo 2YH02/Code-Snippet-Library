@@ -323,7 +323,6 @@ const PostPageTest = () => {
     language: "",
     tags: [""],
     author_id: null,
-    author_name: "",
     rating: "",
   });
 
@@ -337,7 +336,6 @@ const PostPageTest = () => {
       setSnippet({
         ...snippet,
         author_id: data.id,
-        author_name: data.name,
       });
     }
   }, []);
