@@ -131,15 +131,15 @@ const First = styled.section`
       position: relative;
       justify-contents: center;
       align-items: center;
-      width: 20vw;
-      height: 20vh;
-      animation: ${animate} 0.5s ease-in-out forwards;
-      animation-delay: 0.2s;
+      width: 25vw;
+      height: 25vh;
+      animation: ${animate} 0.2s ease-in-out forwards;
+      animation-delay: 0.1s;
     }
   }
   &.active .banner .blocks {
-    animation: ${animateTwo} 0.5s ease-in-out forwards;
-    // animation-delay: 0.2s;
+    animation: ${animateTwo} 0.2s ease-in-out forwards;
+    // animation-delay: 0.1s;
     // background-color: white;
     background: url(title.png);
     background-position: center;
@@ -175,13 +175,14 @@ const Fourth = styled.div`
 `;
 const Home = () => {
   const navigate = useNavigate();
+  // first page action
   useEffect(() => {
     const banner = document.getElementsByClassName("banner")[0];
     const blocks = document.getElementsByClassName("blocks");
-    for (let i = 1; i < 30; i++) {
+    for (let i = 1; i < 20; i++) {
       banner.innerHTML += `<div class='blocks' id='${i}'></div>`;
-      const duration = Math.random() * 3;
-      blocks[i].style.animationDuration = 0.5 + duration + "s";
+      const duration = Math.random() * 2;
+      blocks[i].style.animationDuration = 0.4 + duration + "s";
       blocks[i].style.animationDelay = duration + "s";
     }
     const section = document.querySelector("section");
@@ -191,7 +192,7 @@ const Home = () => {
       section.classList.add("active");
       btn.classList.add("block");
       title.innerHTML = "<span>CoDE sNIppeT</span><span>LiBRaRY</span>";
-    }, 8000);
+    }, 5000);
   }, []);
 
   const scrollRef = useRef(null);
@@ -199,6 +200,7 @@ const Home = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
+  // second page action
   return (
     <Main>
       <First>

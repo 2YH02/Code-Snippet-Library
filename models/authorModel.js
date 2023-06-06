@@ -31,6 +31,10 @@ const Author = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    likes: {
+      type: DataTypes.JSON,
+      allowNull: true,
+    },
     access_token: {
       type: DataTypes.STRING,
       allowNull: false,

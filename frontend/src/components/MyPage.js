@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import MySnippets from "./MySnippets";
+import LikeSnippets from "./LikeSnippets";
 import Loading from "./Loading";
 import style from "react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark";
 
@@ -188,7 +189,9 @@ const MyPage = (props) => {
           <MySnippets></MySnippets>
         </SaveContainer>
       ) : (
-        <LikeContainer>좋아요한 코드 목록</LikeContainer>
+        <SaveContainer>
+          <LikeSnippets user={user}></LikeSnippets>
+        </SaveContainer>
       )}
       {promo ? (
         <ProfileModal>

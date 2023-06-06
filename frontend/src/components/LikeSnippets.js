@@ -147,30 +147,22 @@ const Info = styled.div`
   }
 `;
 
-const MySnippets = () => {
+const LikeSnippets = ({ user }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [user, setUser] = useState({});
   const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("account"));
-    // console.log(localUser);
-    setUser(localUser);
-    if (localUser !== null) {
-      fetch(`http://localhost:8123/snippets/author/${localUser.id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data.body);
-          setSnippets(data.body);
-          setLoading(false);
-        })
-        .catch((error) => console.error(error));
-    }
+    fetch(`http://localhost:8123/snippets/likes/${user.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.body);
+        setSnippets(data.body);
+      })
+      .catch((error) => console.error(error));
   }, []);
-  // console.log(snippets);
 
   const [isActive, setIsActive] = useState(false);
   const mouseHandler = () => {
@@ -202,36 +194,45 @@ const MySnippets = () => {
 
   return (
     <Container>
-      {snippets.map((v, i) => {
-        return (
-          <CardWrapContainer key={v.id}>
-            <CardWrap onMouseEnter={mouseHandler} onMouseLeave={mouseHandler}>
-              <Card
-                onClick={() => {
-                  navigate(`/snippets/${v.id}`);
-                }}
-              >
-                <div id="syntax-title">{v.title}</div>
-                <SyntaxHighlighter
-                  language="javascript"
-                  style={gruvboxLight}
-                  customStyle={customStyle}
+      {snippets === undefined ? (
+        "좋아요한 코드 없음"
+      ) : (
+        <>
+          {snippets.map((v, i) => {
+            return (
+              <CardWrapContainer key={v.id}>
+                <CardWrap
+                  onMouseEnter={mouseHandler}
+                  onMouseLeave={mouseHandler}
                 >
-                  {v.code}
-                </SyntaxHighlighter>
-              </Card>
-              <Info className={isActive ? "isActive" : ""}>
-                <h3 className="title">{v.title}</h3>
-                <p className="language">{v.language}</p>
-                <div className="empty"></div>
-                <p className="name">{v.author.name}</p>
-              </Info>
-            </CardWrap>
-          </CardWrapContainer>
-        );
-      })}
+                  <Card
+                    onClick={() => {
+                      navigate(`/snippets/${v.id}`);
+                    }}
+                  >
+                    <div id="syntax-title">{v.title}</div>
+                    <SyntaxHighlighter
+                      language="javascript"
+                      style={gruvboxLight}
+                      customStyle={customStyle}
+                    >
+                      {v.code}
+                    </SyntaxHighlighter>
+                  </Card>
+                  <Info className={isActive ? "isActive" : ""}>
+                    <h3 className="title">{v.title}</h3>
+                    <p className="language">{v.language}</p>
+                    <div className="empty"></div>
+                    <p className="name">{v.author.name}</p>
+                  </Info>
+                </CardWrap>
+              </CardWrapContainer>
+            );
+          })}
+        </>
+      )}
     </Container>
   );
 };
 
-export default MySnippets;
+export default LikeSnippets;

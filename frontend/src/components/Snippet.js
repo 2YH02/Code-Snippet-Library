@@ -80,7 +80,7 @@ const Info = styled.div`
     justify-content: space-between;
     & span {
       cursor: pointer;
-      padding: 5px;
+      // padding: 5px;
     }
     & .i-1:hover {
       text-shadow: rgba(255, 255, 255, 0.65) 0px 0px 4px,
@@ -95,8 +95,8 @@ const Info = styled.div`
       cursor: pointer;
       margin-left: 10px;
       &:hover {
-        box-shadow: rgba(255, 255, 255, 0.25) 0px 14px 28px,
-          rgba(255, 255, 255, 0.22) 0px 10px 10px;
+        // box-shadow: rgba(255, 255, 255, 0.25) 0px 14px 28px,
+        //   rgba(255, 255, 255, 0.22) 0px 10px 10px;
       }
     }
   }
@@ -169,9 +169,25 @@ const Snippet = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  // 초기화
   const [snippet, setSnippet] = useState({});
   const [author, setAuthor] = useState({});
   const [user, setUser] = useState({});
+  
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem("account"));
+    if (localUser === null || localUser.isLogin === false) {
+      navigate("/login");
+    } else {
+      setUser(localUser);
+    }
+  }, []);
+
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("account"));
+    setUser(userData);
+  }, []);
+
   useEffect(() => {
     fetch(`http://localhost:8123/snippets/${id}`)
       .then((res) => res.json())
@@ -188,17 +204,14 @@ const Snippet = () => {
         .then((res) => res.json())
         .then((data) => {
           setAuthor(data.body);
+          fetchLikeBtn();
         })
         .catch((error) => console.error(error));
     }
   }, [snippet]);
   // console.log(snippet);
 
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("account"));
-    setUser(userData);
-  }, []);
-
+  // 삭제
   const deleteHandler = () => {
     fetch(`http://localhost:8123/snippets/delete/${snippet.id}`, {
       method: "DELETE",
@@ -216,6 +229,45 @@ const Snippet = () => {
       });
   };
 
+  // 저장
+  const [likeBtn, setLikeBtn] = useState();
+
+  // 좋아요 현황 확인
+  const fetchLikeBtn = () => {
+    fetch(`http://localhost:8123/authors/likes/${user.id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.body);
+        if (data.body === null || !data.body.includes(snippet.id)) {
+          setLikeBtn(false);
+        } else if (data.body.includes(snippet.id) || data.body !== null) {
+          setLikeBtn(true);
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const fetchAuthorLikes = () => {
+    fetch("http://localhost:8123/authors/likes", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        snippet_id: snippet.id,
+        author_id: user.id,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          console.log("성공");
+          fetchLikeBtn();
+        } else if (!res.ok) {
+          console.log("실패");
+        }
+      })
+      .catch((error) => console.error(error));
+  };
   return (
     <Container>
       <CodeWrap>
@@ -236,15 +288,21 @@ const Snippet = () => {
         <Info>
           <div id="icon">
             <div>
-              <span className="i-1">icon1</span>
-              <span className="i-1">icon2</span>
+              {/* <span className="i-1">🤍</span> */}
+              {/* <span className="i-1">❤️</span> */}
             </div>
             <div>
               <span>
                 {user.id === snippet.author_id ? (
                   <button onClick={deleteHandler}>삭제</button>
                 ) : null}
-                <button>저장</button>
+                <button
+                  onClick={() => {
+                    fetchAuthorLikes();
+                  }}
+                >
+                  {!likeBtn ? "저장" : "저장됨"}
+                </button>
               </span>
             </div>
           </div>

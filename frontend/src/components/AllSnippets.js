@@ -35,13 +35,14 @@ const Main = styled.div`
   align-items: center;
   flex-direction: column;
   position: relative;
+  padding: 2rem;
   & > .up {
     // border: 1px solid red;
     z-index: 3;
     cursor: pointer;
     font-size: 2rem;
-    position: absolute;
-    top: 1rem;
+    position: fixed;
+    top: 4.5rem;
     left: 50%;
     transform: translate(-50%);
   }
@@ -50,7 +51,7 @@ const Main = styled.div`
     z-index: 3;
     cursor: pointer;
     font-size: 2rem;
-    position: absolute;
+    position: fixed;
     bottom: 1rem;
     left: 50%;
     transform: translate(-50%);
@@ -59,12 +60,12 @@ const Main = styled.div`
 const Container = styled.div`
   // border: 1px solid red;
   position: relative;
-  overflow: auto;
+  // overflow: auto;
   width: 100%;
   height: 100%;
   // top: -100px;
   // min-height: 800px;
-  padding: 2rem;
+  // padding: 2rem;
   // margin: 1rem;
   display: grid;
   place-items: center;
@@ -123,6 +124,18 @@ const Card = styled.div`
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   }
+  & > #syntax-title {
+    // border: 1px solid red;
+    padding: 2px;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+    // margin: 2px;
+    position: absolute;
+    width: 86%;
+    text-align: center;
+    font-weight: bold;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 `;
 const CardWrap = styled.div`
   // border: 1px solid red;
@@ -133,7 +146,7 @@ const CardWrap = styled.div`
   height: 210px;
   position: absolute;
   margin-bottom: 100px;
-  top: 50%;
+  top: 48%;
   transform: translateY(-50%);
   transition: all 0.5s;
   display: flex;
@@ -293,6 +306,7 @@ const AllSnippets = (props) => {
                         navigate(`/snippets/${v.id}`);
                       }}
                     >
+                      <div id="syntax-title">{v.title}</div>
                       <SyntaxHighlighter
                         language="javascript"
                         style={gruvboxLight}

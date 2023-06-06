@@ -28,8 +28,10 @@ router.get("/profile/:file", (req, res) => {
 
 router.get("/", authorController.getAuthors);
 router.get("/:id", authorController.getAuthorById);
+router.get("/likes/:id", authorController.getAuthorLikes);
 router.post("/new", authorController.createAuthor);
-router.put("/update", authorController.updateAuthor);
 router.post("/delete", authorController.deleteAuthor);
+router.put("/update", authorController.updateAuthor);
+router.put("/likes", authorController.updateLikes);
 
 module.exports = router;

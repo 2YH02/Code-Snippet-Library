@@ -76,6 +76,32 @@ exports.getSnippetsBySix = async (req, res) => {
   }
 };
 
+// Get like snippets
+exports.getLikeSnippets = async (req, res) => {
+  try {
+    const author = await Author.findOne({
+      where: { id: req.params.id },
+    });
+    if (author.likes === null || author.likes.lenght === 0) {
+      res.json({ message: "없음" });
+    } else {
+      const snippets = await Snippet.findAll({
+        where: { id: author.likes },
+        include: [
+          {
+            model: Author,
+            attributes: ["name"],
+          },
+        ],
+      });
+      res.json({ body: snippets });
+    }
+  } catch (error) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+};
+
 // Create snippet
 exports.createSnippet = async (req, res) => {
   try {
