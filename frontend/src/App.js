@@ -11,24 +11,18 @@ import Snippet from "./components/Snippet";
 import MySnippets from "./components/MySnippets";
 import UpdatePost from "./components/UpdatePost";
 import { NotFound } from "./components/NotFound";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSolid,
+  faCode,
+  faList,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
 
 const MainLogo = styled.div`
   // border: 1px solid red;
   display: flex;
   flex-direction: column;
-`;
-const Profile = styled.div`
-  display: flex;
-  margin-left: 20px;
-`;
-const ProfileImg = styled.img`
-  border-radius: 50%;
-  width: 40%;
-`;
-const ProfileName = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 0 50px 0 10px;
 `;
 
 function App() {
@@ -71,32 +65,10 @@ function App() {
       setUser(data);
     }
   }, []);
+  // console.log(user);
 
   const emptyRef = useRef(null);
-  const inputBoxRef = useRef(null);
-  const inputRef = useRef(null);
-  const focusHandler = () => {
-    if (window.innerWidth > 830) {
-      emptyRef.current.style.flex = "-1";
-      inputBoxRef.current.style.flex = "3 1 100%";
-      inputRef.current.style.width = "100%";
-    } else {
-      emptyRef.current.style.flex = "-1";
-      inputBoxRef.current.style.flex = "700 1 100%";
-      inputRef.current.style.width = "100%";
-    }
-  };
-  const blurHandler = () => {
-    if (window.innerWidth > 830) {
-      emptyRef.current.style.flex = "3";
-      inputBoxRef.current.style.flex = "1";
-      inputRef.current.style.width = "350px";
-    } else {
-      emptyRef.current.style.flex = "-1";
-      inputBoxRef.current.style.flex = "700 1 100%";
-      inputRef.current.style.width = "100%";
-    }
-  };
+  const [search, setSearch] = useState(false);
 
   // console.log(user);
 
@@ -112,28 +84,33 @@ function App() {
               navigate("/");
             }}
           >
-            <span>CoDE sNIppeT</span>
-            <span>LiBRaRY</span>
+            <span className="highlight">SNIppeT Hub</span>
           </MainLogo>
           <div className="header-menu">
             <Link to={"/snippets"} className="link">
-              코드
+              <FontAwesomeIcon icon={faList} />
             </Link>
             <Link to={"/post-test"} className="link">
-              코드생성
+              <FontAwesomeIcon icon={faCode} />
             </Link>
+
+            <div className="search-bar">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                style={{ cursor: "pointer", zIndex: "10", color: "#5f5e5e" }}
+                onClick={() => {
+                  setSearch(!search);
+                }}
+              />
+              <input
+                type="text"
+                placeholder="Search"
+                className={`nav-input ${search ? "active" : ""}`}
+              ></input>
+            </div>
+            <Link></Link>
           </div>
           <div className="empty" ref={emptyRef}></div>
-          <div className="search-bar" ref={inputBoxRef}>
-            <input
-              type="text"
-              placeholder="Search"
-              className="nav-input"
-              ref={inputRef}
-              onFocus={focusHandler}
-              onBlur={blurHandler}
-            ></input>
-          </div>
 
           {user.isLogin ? (
             <div className="profile-container">
@@ -167,7 +144,7 @@ function App() {
                           navigate("/my-page");
                         }}
                       >
-                        마이페이지
+                        <span className="highlight-1">마이페이지</span>
                       </a>
                     </li>
                     <li>
@@ -176,11 +153,17 @@ function App() {
                           navigate("/post-test");
                         }}
                       >
-                        글쓰기
+                        <span className="highlight-1">글쓰기</span>
                       </a>
                     </li>
                     <li>
-                      <a>설정</a>
+                      <a
+                        onClick={() => {
+                          navigate("/");
+                        }}
+                      >
+                        <span className="highlight-1">설정</span>
+                      </a>
                     </li>
                     <li>
                       <a
@@ -191,7 +174,7 @@ function App() {
                           navigate("/");
                         }}
                       >
-                        로그아웃
+                        <span className="highlight-1">로그아웃</span>
                       </a>
                     </li>
                   </ul>

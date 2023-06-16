@@ -1,10 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowDownLong,
-  faArrowDown,
-} from "@fortawesome/free-solid-svg-icons";
 import styled, { keyframes } from "styled-components";
 
 const Main = styled.div`
@@ -12,209 +7,375 @@ const Main = styled.div`
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  // height: calc(100vh - 56px);
-  // overflow: hidden;
+  height: calc(100vh - 56px);
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   & > div {
     // border: 1px solid blue;
-    height: calc(100vh - 56px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 950px;
+    margin: 0 auto;
   }
 `;
-
-const animate = keyframes`
-  0% {
-    transform: translateX(1300px);
-    // background-color: white;
-    background: url(title.png);
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    box-shadow:0 5px 15px rgba(0, 0, 0, 0.5); 
-  }
-  97% {
-    transform: translateX(0px);
-    // background-color: white;
-    background: url(title.png);
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow:0 5px 15px rgba(0, 0, 0, 0.5); 
-  }
-  100% {
-    transform: translateX(0px);
-    // background-color: white;
-    background: url(title.png);
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    // border: 1px solid rgba(0, 0, 0, 0.1);
-    // box-shadow:0 5px 15px rgba(0, 0, 0, 0.5); 
-  }
-`;
-const animateTwo = keyframes`
-  0% {
-    transform: translateX(0px);
-    // background-color: white;
-    background: url(title.png);
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow:0 5px 15px rgba(0, 0, 0, 0.5); 
-  }
-  3% {
-    transform: translateX(0px);
-    // background-color: white;
-    background: url(title.png);
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow:0 5px 15px rgba(0, 0, 0, 0.5); 
-  }
-  100% {
-    transform: translateX(2000px);
-    // background-color: white;
-    background: url(title.png);
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    box-shadow:0 5px 15px rgba(0, 0, 0, 0.5); 
-  }
-`;
-const First = styled.section`
+const First = styled.div`
   & * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-  background-color: #9b635a;
+  background-color: #e8eaf6;
   position: relative;
   width: 100%;
   height: calc(100vh - 56px);
-  transform-style: preserve-3d;
-  perspective: 500px;
-  overflow: hidden;
-  & > h2 {
-    position: relative;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100vh;
-    text-align: center;
-    // line-height: 100vh;
-    font-size: 10vw;
-    font-weight: 700;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    & > span {
-      font-family: "Pangolin", cursive;
-    }
-  }
-  & > .banner {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100%;
-    overflow: hidden;
-    display: flex;
-    flex-wrap: wrap;
-    & .blocks {
-      color: black;
-      z-index: 6;
+  & > .start-link {
+    font-size: 3vw;
+    font-weight: bold;
+    position: fixed;
+    bottom: 17vh;
+    left: 23vw;
+    // opacity: 0;
+    & > a {
+      z-index: 12;
       position: relative;
-      justify-contents: center;
-      align-items: center;
-      width: 25vw;
-      height: 25vh;
-      animation: ${animate} 0.2s ease-in-out forwards;
-      animation-delay: 0.1s;
+      pointer-events: all;
+      cursor: pointer;
+    }
+    & .highlight-3 {
+      z-index: 11;
+      width: 0;
+      height: 1.5vw;
+      background-color: #82f888;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transition: width 0.2s;
+    }
+    & > a:hover + .highlight-3 {
+      width: 100%;
+      transition: width 0.2s;
+    }
+    @media (max-width: 768px) {
+      left: 20vw;
+      bottom: 19vw;
+      font-size: 4vw;
+    }
+    @media (max-width: 570px) {
+      left: 17vw;
+      bottom: 20vw;
+      font-size: 5vw;
+    }
+    @media (max-width: 505px) {
+      width: 10rem;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 4rem;
+      font-size: 2rem;
+      padding: 0.5rem 1rem;
     }
   }
-  &.active .banner .blocks {
-    animation: ${animateTwo} 0.2s ease-in-out forwards;
-    // animation-delay: 0.1s;
-    // background-color: white;
-    background: url(title.png);
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
+  & > div {
+    // border: 1px solid red;
+    z-index: 5;
+    position: fixed;
+    pointer-events: none;
+    transition: all 0.5s;
   }
-`;
-const Scroll = styled.div`
-  display: none;
-  font-size: 10vw;
-  font-weight: 700;
-  cursor: pointer;
-  position: absolute;
-  bottom: 10vh;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 60px;
-  z-index: 5;
-  &:hover {
-    bottom: 7vh;
+  & > div:nth-child(3) {
+    top: 12.8vw;
+    left: -900px;
+    width: 33vw;
+    height: 2.5vw;
+    background: #82f888;
+    @media (max-width: 768px) {
+      top: 15.5vw;
+    }
+    @media (max-width: 570px) {
+      top: 19.5vw;
+    }
+    @media (max-width: 505px) {
+      top: 10rem;
+      width: 17.5rem;
+      height: 1rem;
+    }
   }
-  &.block {
-    display: block;
+  & > div:nth-child(4) {
+    top: 25.3vw;
+    left: -900px;
+    width: 17vw;
+    height: 2.5vw;
+    background: #82f888;
+    @media (max-width: 768px) {
+      top: 28.3vw;
+    }
+    @media (max-width: 570px) {
+      top: 32.3vw;
+    }
+    @media (max-width: 505px) {
+      top: 15rem;
+      width: 9rem;
+      height: 1rem;
+    }
   }
-`;
+  & .title {
+    pointer-events: none;
+    font-size: 8vw;
+    position: fixed;
+    font-family: "Roboto", sans-serif;
+    z-index: 5;
+    @media (max-width: 505px) {
+      font-size: 3rem;
+    }
+  }
+  // 첫번째 타이틀
+  & .title-m {
+    top: 6.8vw;
+    @media (max-width: 768px) {
+      top: 10vw;
+    }
+    @media (max-width: 570px) {
+      top: 14vw;
+    }
+    @media (max-width: 505px) {
+      top: 7.7rem;
+    }
+  }
+  & .title-s {
+    top: 19.5vw;
+    @media (max-width: 768px) {
+      top: 22.7vw;
+    }
+    @media (max-width: 570px) {
+      top: 27vw;
+    }
+    @media (max-width: 505px) {
+      top: 12.8rem;
+    }
+  }
+  // 두번째 타이틀
+  & .titleS-m {
+    top: 6.8vw;
+    left: 0;
+    @media (max-width: 768px) {
+      top: 10vw;
+    }
+    @media (max-width: 570px) {
+      top: 14vw;
+    }
+    @media (max-width: 505px) {
+      top: 7.7rem;
+    }
+  }
+  & .titleS-s {
+    top: 19.5vw;
+    left: 0;
+    @media (max-width: 768px) {
+      top: 22.7vw;
+    }
+    @media (max-width: 570px) {
+      top: 27vw;
+    }
+    @media (max-width: 505px) {
+      top: 12.8rem;
+    }
+  }
 
-const Second = styled.div`
-  background-color: #fff5e9;
+  & > .code-box {
+    // border: 1px solid red;
+    position: fixed;
+    bottom: -60vh;
+    right: 10vw;
+    width: 28vw;
+    height: 28vw;
+    pointer-events: none;
+    @media (max-width: 505px) {
+      top: 70%;
+      left: -120%;
+      transform: translate(-50%, -50%);
+      width: 28vw;
+      height: 28vw;
+    }
+  }
+  & > .fix {
+    // border: 1px solid red;
+    position: fixed;
+    bottom: 0;
+    right: 10vw;
+    width: 28vw;
+    height: 28vw;
+    pointer-events: none;
+    @media (max-width: 1200px) {
+      width: 35vw;
+      height: 35vw;
+    }
+    @media (max-width: 570px) {
+      width: 40vw;
+      height: 40vw;
+    }
+    @media (max-width: 505px) {
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 15rem;
+      height: 15rem;
+    }
+  }
 `;
-const Third = styled.div``;
+const Second = styled.div`
+  // background-color: #e8eaf6;
+  position: relative;
+`;
+const Third = styled.div`
+  // background-color: #e8eaf6;
+`;
 const Fourth = styled.div`
-  background-color: #fff5e9;
+  // background-color: #e8eaf6;
 `;
 const Home = () => {
   const navigate = useNavigate();
-  // first page action
+
+  // 스크롤
+  const [scroll, setScroll] = useState(0);
+  const [fontStyle, setFontStyle] = useState([true, true]);
+  const [fix, setFix] = useState(false);
+  const [left, setLeft] = useState("-900px");
+  const [leftS, setLeftS] = useState("-900px");
+  const [display, setDisplay] = useState(false);
+  const [displayS, setDisplayS] = useState(false);
+  const [ops, setOps] = useState("0");
   useEffect(() => {
-    const banner = document.getElementsByClassName("banner")[0];
-    const blocks = document.getElementsByClassName("blocks");
-    for (let i = 1; i < 20; i++) {
-      banner.innerHTML += `<div class='blocks' id='${i}'></div>`;
-      const duration = Math.random() * 2;
-      blocks[i].style.animationDuration = 0.4 + duration + "s";
-      blocks[i].style.animationDelay = duration + "s";
+    // console.log(scroll);
+    if (scroll > 615 && scroll < 750) {
+      let copy = [...fontStyle];
+      copy[0] = false;
+      copy[1] = true;
+      setFontStyle(copy);
+    } else if (scroll > 750) {
+      let copy = [...fontStyle];
+      copy[0] = false;
+      copy[1] = false;
+      setFontStyle(copy);
+    } else if (scroll < 615) {
+      let copy = [...fontStyle];
+      copy[0] = true;
+      copy[1] = true;
+      setFontStyle(copy);
     }
-    const section = document.querySelector("section");
-    const title = document.getElementById("title");
-    const btn = document.getElementById("scroll");
-    setTimeout(() => {
-      section.classList.add("active");
-      btn.classList.add("block");
-      title.innerHTML = "<span>CoDE sNIppeT</span><span>LiBRaRY</span>";
-    }, 5000);
-  }, []);
 
-  const scrollRef = useRef(null);
-  const goScroll = () => {
-    scrollRef.current.scrollIntoView({ behavior: "smooth" });
-  };
+    if (scroll >= 1040) {
+      setFix(true);
+      // console.log(fix);
+    } else if (scroll < 1040) {
+      // console.log(fix);
+      setFix(false);
+    }
 
-  // second page action
+    if (scroll >= 1100 && display == true) {
+      setLeft("0");
+    } else if (scroll < 1100) {
+      setLeft("-900px");
+    }
+    if (scroll >= 1200) {
+      setDisplay(true);
+    } else if (scroll < 1200 && left == "0") {
+      setDisplay(false);
+    }
+    if (scroll >= 1500 && displayS == true) {
+      setLeftS("0");
+    } else if (scroll < 1500) {
+      setLeftS("-900px");
+    }
+    if (scroll >= 1500) {
+      setDisplayS(true);
+    } else if (scroll < 1500) {
+      setDisplayS(false);
+    }
+
+    if (scroll >= 1800) {
+      setOps("1");
+    } else if (scroll < 1800) {
+      setOps("0");
+    }
+  }, [scroll]);
+
   return (
-    <Main>
+    <Main
+      onScroll={(e) => {
+        // console.log(e.target.scrollTop);
+        setScroll(e.target.scrollTop);
+      }}
+    >
       <First>
-        <h2 id="title"></h2>
-        <Scroll id="scroll" onClick={goScroll}>
-          <FontAwesomeIcon icon={faArrowDown} />
-        </Scroll>
-        <div className="banner">
-          <div className="blocks"></div>
+        <div style={{ display: display ? "none" : "block" }}>
+          <span
+            className="title title-m"
+            style={{ fontStyle: fontStyle[1] ? "normal" : "italic" }}
+          >
+            MAKE YOUR
+          </span>
+        </div>
+        <div style={{ display: displayS ? "none" : "block" }}>
+          <span
+            className="title title-s"
+            style={{ fontStyle: fontStyle[0] ? "normal" : "italic" }}
+          >
+            CoDE
+          </span>
+        </div>
+        <div style={{ left: left, display: display ? "block" : "none" }}>
+          <span
+            className="title titleS-m"
+            style={{
+              fontStyle: fontStyle[1] ? "normal" : "italic",
+            }}
+          >
+            SNIPPET
+          </span>
+        </div>
+        <div style={{ left: leftS, display: displayS ? "block" : "none" }}>
+          <span
+            className="title titleS-s"
+            style={{ fontStyle: fontStyle[0] ? "normal" : "italic" }}
+          >
+            HUB
+          </span>
+        </div>
+        <div
+          className="start-link"
+          style={{
+            opacity: ops,
+          }}
+        >
+          <a>START</a>
+          <div className="highlight-3"></div>
+        </div>
+        <div
+          className={fix ? "fix" : "code-box"}
+          style={{
+            margin: "0 auto",
+          }}
+        >
+          <video
+            muted
+            autoPlay
+            loop
+            style={{
+              width: "100%",
+              border: "none",
+              outline: "none",
+              borderTopLeftRadius: ".5vw",
+              borderTopRightRadius: ".5vw",
+            }}
+          >
+            <source src="coding.mp4"></source>
+          </video>
         </div>
       </First>
-      <Second ref={scrollRef}>메인페이지 2번</Second>
-      <Third>메인페이지 3번</Third>
-      <Fourth>메인페이지 4번</Fourth>
+      <Second></Second>
+      <Third></Third>
+      <Fourth></Fourth>
     </Main>
   );
 };
