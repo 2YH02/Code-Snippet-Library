@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserData, resetUserData } from "../features/userSlice";
 const Main = styled.div`
   // border: 1px solid red;
   margin: 0;
@@ -236,6 +237,9 @@ const Fourth = styled.div`
 const Home = () => {
   const navigate = useNavigate();
 
+  const userInfo = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   // 스크롤
   const [scroll, setScroll] = useState(0);
   const [fontStyle, setFontStyle] = useState([true, true]);
@@ -348,7 +352,13 @@ const Home = () => {
             opacity: ops,
           }}
         >
-          <a>START</a>
+          <a
+            onClick={() => {
+              console.log(userInfo);
+            }}
+          >
+            START
+          </a>
           <div className="highlight-3"></div>
         </div>
         <div

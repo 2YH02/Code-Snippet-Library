@@ -11,6 +11,7 @@ import {
   gruvboxLight,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
 import data from "../data";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   // border: 1px solid red;
@@ -149,18 +150,14 @@ const Info = styled.div`
 
 const MySnippets = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const userInfo = useSelector((state) => state.user);
 
-  const [user, setUser] = useState({});
   const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("account"));
-    // console.log(localUser);
-    setUser(localUser);
-    if (localUser !== null) {
-      fetch(`http://localhost:8123/snippets/author/${localUser.id}`)
+    if (userInfo.id !== null) {
+      fetch(`http://localhost:8123/snippets/author/${userInfo.id}`)
         .then((res) => res.json())
         .then((data) => {
           // console.log(data.body);
@@ -170,7 +167,6 @@ const MySnippets = () => {
         .catch((error) => console.error(error));
     }
   }, []);
-  // console.log(snippets);
 
   const [isActive, setIsActive] = useState(false);
   const mouseHandler = () => {

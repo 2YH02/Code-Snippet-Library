@@ -5,6 +5,8 @@ import MySnippets from "./MySnippets";
 import LikeSnippets from "./LikeSnippets";
 import Loading from "./Loading";
 import style from "react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserData } from "../features/userSlice";
 
 const Main = styled.div`
   // border: 2px solid red;
@@ -111,19 +113,13 @@ const ProfileModal = styled.div`
 
 const MyPage = (props) => {
   const navigate = useNavigate();
-
-  // 유저 저장, 인가 확인
-  const [user, setUser] = useState({});
+  const userInfo = useSelector((state) => state.user);
 
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("account"));
-    if (localUser === null || localUser.isLogin === false) {
+    if (userInfo.isLogin === false) {
       navigate("/login");
-    } else {
-      setUser(localUser);
     }
   }, []);
-  // console.log(user);
 
   // 프로필 변경
   const [promo, setPromo] = useState(false);
@@ -138,16 +134,16 @@ const MyPage = (props) => {
         <div className="img-box">
           <img
             src={
-              user.photo
-                ? `http://localhost:8123/authors/profile/${user.photo}`
+              userInfo.photo
+                ? `http://localhost:8123/authors/profile/${userInfo.photo}`
                 : "user.png"
             }
           />
         </div>
         <div className="info-box">
           <div className="info-top">
-            <p className="user-name">{user.name}</p>
-            <p className="user-email">{user.email}</p>
+            <p className="user-name">{userInfo.name}</p>
+            <p className="user-email">{userInfo.email}</p>
           </div>
           <div className="info-bottom">
             <p className="follow">팔로워: 0</p>
@@ -190,12 +186,12 @@ const MyPage = (props) => {
         </SaveContainer>
       ) : (
         <SaveContainer>
-          <LikeSnippets user={user}></LikeSnippets>
+          <LikeSnippets></LikeSnippets>
         </SaveContainer>
       )}
       {promo ? (
         <ProfileModal>
-          <Modal id={user.id} setPromo={setPromo} user={user} />
+          <Modal setPromo={setPromo} />
         </ProfileModal>
       ) : null}
     </Main>
@@ -279,12 +275,14 @@ const LoadingWrap = styled.div`
   justify-content: center;
   align-items: center;
 `;
-function Modal({ id, setPromo, user }) {
+function Modal({ setPromo }) {
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.user);
 
   const [updateUser, setUpdateUser] = useState({
-    author_id: id,
-    img: user.photo,
+    author_id: userInfo.id,
+    img: userInfo.photo,
   });
 
   const [file, setFile] = useState(null);
@@ -309,12 +307,16 @@ function Modal({ id, setPromo, user }) {
         .then((res) => {
           setLoading(false);
           if (res.ok) {
-            let user = JSON.parse(localStorage.getItem("account"));
-            user.name = updateUser.name;
-            localStorage.setItem("account", JSON.stringify(user));
-            console.log("PUT 요청이 성공했습니다.");
-            setPromo(true);
-            window.location.reload();
+            dispatch(
+              updateUserData({
+                id: userInfo.id,
+                name: updateUser.name,
+                email: userInfo.email,
+                photo: updateUser.img,
+                isLogin: true,
+              })
+            );
+            setPromo(false);
           } else {
             console.error("PUT 요청이 실패했습니다.");
           }
@@ -333,26 +335,31 @@ function Modal({ id, setPromo, user }) {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           fetch(`http://localhost:8123/authors/profile/`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              author_id: user.id,
+              author_id: userInfo.id,
               img: data.filename,
             }),
           })
             .then((res) => {
               setLoading(false);
               if (res.ok) {
-                console.log("성공");
-                let user = JSON.parse(localStorage.getItem("account"));
-                user.photo = data.filename;
-                localStorage.setItem("account", JSON.stringify(user));
-                setPromo(true);
-                window.location.reload();
+                // console.log("성공");
+                dispatch(
+                  updateUserData({
+                    id: userInfo.id,
+                    name: updateUser.name,
+                    email: userInfo.email,
+                    photo: data.filename,
+                    isLogin: true,
+                  })
+                );
+                setPromo(false);
               } else {
                 console.error("PUT 요청이 실패했습니다.");
               }
@@ -412,8 +419,8 @@ function Modal({ id, setPromo, user }) {
                 src={
                   imgUrl
                     ? imgUrl
-                    : user.photo
-                    ? `http://localhost:8123/authors/profile/${user.photo}`
+                    : userInfo.photo
+                    ? `http://localhost:8123/authors/profile/${userInfo.photo}`
                     : "/user.png"
                 }
                 // onClick={clickImg}
@@ -438,7 +445,7 @@ function Modal({ id, setPromo, user }) {
               className="name-input"
               type="text"
               name="img"
-              defaultValue={user.name}
+              defaultValue={userInfo.name}
               onChange={addName}
             />
           </div>
@@ -449,7 +456,7 @@ function Modal({ id, setPromo, user }) {
             <button
               className="cancel-btn"
               onClick={() => {
-                console.log(id, updateUser);
+                console.log(userInfo);
                 setPromo(false);
               }}
             >

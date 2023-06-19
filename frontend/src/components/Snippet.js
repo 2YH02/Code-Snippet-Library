@@ -13,6 +13,7 @@ import codeprism from "../styles/codeprism";
 import data from "../data";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   // border: 1px solid red;
@@ -167,25 +168,17 @@ const Info = styled.div`
 
 const Snippet = () => {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.user);
   const { id } = useParams();
 
   // 초기화
   const [snippet, setSnippet] = useState({});
   const [author, setAuthor] = useState({});
-  const [user, setUser] = useState({});
-  
-  useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("account"));
-    if (localUser === null || localUser.isLogin === false) {
-      navigate("/login");
-    } else {
-      setUser(localUser);
-    }
-  }, []);
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("account"));
-    setUser(userData);
+    if (userInfo.isLogin === false) {
+      navigate("/login");
+    }
   }, []);
 
   useEffect(() => {
@@ -234,7 +227,7 @@ const Snippet = () => {
 
   // 좋아요 현황 확인
   const fetchLikeBtn = () => {
-    fetch(`http://localhost:8123/authors/likes/${user.id}`)
+    fetch(`http://localhost:8123/authors/likes/${userInfo.id}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data.body);
@@ -255,7 +248,7 @@ const Snippet = () => {
       },
       body: JSON.stringify({
         snippet_id: snippet.id,
-        author_id: user.id,
+        author_id: userInfo.id,
       }),
     })
       .then((res) => {
@@ -293,7 +286,7 @@ const Snippet = () => {
             </div>
             <div>
               <span>
-                {user.id === snippet.author_id ? (
+                {userInfo.id === snippet.author_id ? (
                   <button onClick={deleteHandler}>삭제</button>
                 ) : null}
                 <button

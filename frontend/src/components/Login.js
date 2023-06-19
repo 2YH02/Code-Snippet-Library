@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Loading from "./Loading";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserData } from "../features/userSlice";
 
 const LoadingWrap = styled.div`
   // border: 1px solid red;
@@ -75,16 +77,17 @@ const ErrorMessage = styled.div`
 const Button = styled.button`
   width: 50%;
   height: 48px;
-  border: 1px solid white;
+  border: 1px solid #333333;
   font-weight: 700;
-  background-color: #ce9187;
+  background-color: #5c5c5c;
   border-radius: 64px;
-  color: #5c5c5c;
+  color: #fff5e9;
   margin: 30px 0 10px 0;
   cursor: pointer;
   &:disabled {
     background-color: #dadada;
     color: white;
+    border: 1px solid #f7f7f7;
   }
 `;
 const ButtonBox = styled.div`
@@ -99,8 +102,8 @@ const Box = styled.div`
 const GoogleBtn = styled.button`
   color: #5c5c5c;
   padding: 0.5rem 1rem;
-  background-color: #fff5e9;
-  border: 1px solid #ce9187;
+  background-color: #f7f7f7;
+  border: 1px solid #333333;
   border-radius: 2px;
   margin: 0 10px;
   cursor: pointer;
@@ -112,14 +115,14 @@ const GoogleBtn = styled.button`
 
 const LoginPage = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const userInfo = useSelector((state) => state.user);
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("account"));
-    if (data === null || data.isLogin === false) {
-      navigate("/login");
-    } else {
+    if (userInfo.isLogin) {
       navigate("/");
     }
   }, []);
@@ -154,9 +157,8 @@ const LoginPage = (props) => {
           })
             .then((res) => res.json())
             .then((data) => {
-              localStorage.setItem(
-                "account",
-                JSON.stringify({
+              dispatch(
+                updateUserData({
                   id: data.id,
                   name: data.name,
                   email: details.email,
@@ -164,9 +166,8 @@ const LoginPage = (props) => {
                   isLogin: true,
                 })
               );
-              navigate("/");
-              window.location.reload();
               setIsLoading(true);
+              navigate("/");
             })
             .catch((error) => console.error(error));
         })

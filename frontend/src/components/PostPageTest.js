@@ -11,6 +11,7 @@ import codeprism from "../styles/codeprism";
 import AceEditor from "react-ace";
 import Loading from "./Loading";
 import styled, { keyframes } from "styled-components";
+import { useSelector } from "react-redux";
 
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/mode-python";
@@ -311,10 +312,9 @@ const DeleteBtn = styled(SubmitBtn)``;
 
 const PostPageTest = () => {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.user);
 
   const [loading, setLoading] = useState(false);
-
-  const [user, setUser] = useState({});
 
   const [snippet, setSnippet] = useState({
     title: "",
@@ -327,20 +327,15 @@ const PostPageTest = () => {
   });
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("account"));
-    if (data === null || data.isLogin === false) {
+    if (userInfo.isLogin === false) {
       navigate("/login");
     } else {
-      navigate("/post-test");
-      setUser(data);
       setSnippet({
         ...snippet,
-        author_id: data.id,
+        author_id: userInfo.id,
       });
     }
   }, []);
-
-  // console.log(user.id);
 
   const [disabled, setDisabled] = useState(false);
 

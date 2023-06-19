@@ -11,6 +11,7 @@ import {
   gruvboxLight,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
 import data from "../data";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   // border: 1px solid red;
@@ -147,15 +148,15 @@ const Info = styled.div`
   }
 `;
 
-const LikeSnippets = ({ user }) => {
+const LikeSnippets = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const userInfo = useSelector((state) => state.user);
 
   const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:8123/snippets/likes/${user.id}`)
+    fetch(`http://localhost:8123/snippets/likes/${userInfo.id}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data.body);

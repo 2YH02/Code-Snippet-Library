@@ -13,11 +13,12 @@ import UpdatePost from "./components/UpdatePost";
 import { NotFound } from "./components/NotFound";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faSolid,
   faCode,
   faList,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { resetUserData } from "./features/userSlice";
 
 const MainLogo = styled.div`
   // border: 1px solid red;
@@ -27,16 +28,16 @@ const MainLogo = styled.div`
 
 function App() {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const [user, setUser] = useState({
-    id: null,
-    name: null,
-    email: null,
-    photo: null,
-    isLogin: false,
-  });
   const [myModal, setMyModal] = useState(false);
   const [isActive, setIsActive] = useState("");
+
+  const exitModal = () => {
+    setMyModal(false);
+    setIsActive("");
+  };
 
   const toggleMyModal = () => {
     if (myModal) {
@@ -48,29 +49,8 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("account"));
-    if (data === null || data.isLogin === false) {
-      let copy = { ...user };
-      copy.isLogin = false;
-      setUser(copy);
-    } else {
-      // fetch(`http://localhost:8123/authors/${data.id}`)
-      //   .then((res) => res.json())
-      //   .then((data) => {
-      //     console.log(data);
-      //     setUser(data);
-      //   })
-      //   .catch((error) => console.error(error));
-      setUser(data);
-    }
-  }, []);
-  // console.log(user);
-
   const emptyRef = useRef(null);
   const [search, setSearch] = useState(false);
-
-  // console.log(user);
 
   return (
     <div className="App">
@@ -112,18 +92,18 @@ function App() {
           </div>
           <div className="empty" ref={emptyRef}></div>
 
-          {user.isLogin ? (
+          {userInfo.isLogin ? (
             <div className="profile-container">
               <div className="profile">
                 <img
                   src={
-                    user.photo
-                      ? `http://localhost:8123/authors/profile/${user.photo}`
+                    userInfo.photo
+                      ? `http://localhost:8123/authors/profile/${userInfo.photo}`
                       : "/user.png"
                   }
                   className="profile-img"
                 ></img>
-                <p className="profile-name">{user.name}</p>
+                <p className="profile-name">{userInfo.name}</p>
                 <div
                   className={`profile-btn ${isActive}`}
                   onClick={() => {
@@ -142,6 +122,7 @@ function App() {
                       <a
                         onClick={() => {
                           navigate("/my-page");
+                          exitModal();
                         }}
                       >
                         <span className="highlight-1">마이페이지</span>
@@ -151,6 +132,7 @@ function App() {
                       <a
                         onClick={() => {
                           navigate("/post-test");
+                          exitModal();
                         }}
                       >
                         <span className="highlight-1">글쓰기</span>
@@ -160,6 +142,7 @@ function App() {
                       <a
                         onClick={() => {
                           navigate("/");
+                          exitModal();
                         }}
                       >
                         <span className="highlight-1">설정</span>
@@ -170,7 +153,8 @@ function App() {
                         className="login-btn"
                         onClick={() => {
                           localStorage.removeItem("account");
-                          window.location.reload();
+                          dispatch(resetUserData());
+                          exitModal();
                           navigate("/");
                         }}
                       >
