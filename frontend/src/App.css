@@ -314,7 +314,7 @@ li {
 
 .main-content {
   /* border: 1px solid red; */
-  overflow: hidden;
+  overflow: auto;
   width: 100%;
   margin-top: 56px;
   height: calc(100% - 56px);

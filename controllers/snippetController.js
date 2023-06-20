@@ -50,10 +50,10 @@ exports.getSnippetsById = async (req, res) => {
   }
 };
 
-// Get snippets by 6
+// Get snippets by 4
 exports.getSnippetsBySix = async (req, res) => {
   const page = req.query.page || 1; // 페이지 번호, 기본값은 1
-  const itemsPerPage = 6; // 한 페이지당 보여줄 상품 수
+  const itemsPerPage = 4; // 한 페이지당 보여줄 상품 수
 
   try {
     // 상품 데이터 조회
