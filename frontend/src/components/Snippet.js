@@ -14,10 +14,13 @@ import data from "../data";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   // border: 1px solid red;
   width: 80%;
+  max-width: 1000px;
   margin: 2rem auto;
   height: calc(100% - 4rem);
   display: flex;
@@ -36,7 +39,7 @@ const CodeWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 55%;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -46,7 +49,7 @@ const InfoWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 45%;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -81,24 +84,15 @@ const Info = styled.div`
     justify-content: space-between;
     & span {
       cursor: pointer;
-      // padding: 5px;
-    }
-    & .i-1:hover {
-      text-shadow: rgba(255, 255, 255, 0.65) 0px 0px 4px,
-        rgba(255, 255, 255, 0.62) 0px 2px 4px;
     }
     & button {
-      border: none;
+      border: 1px solid #333333;
       border-radius: 1rem;
-      padding: 5px 10px;
-      background-color: #ce9187;
-      color: rgb(230, 230, 230);
+      padding: 4px 8px;
+      background-color: transparent;
+      color: #333333;
       cursor: pointer;
       margin-left: 10px;
-      &:hover {
-        // box-shadow: rgba(255, 255, 255, 0.25) 0px 14px 28px,
-        //   rgba(255, 255, 255, 0.22) 0px 10px 10px;
-      }
     }
   }
   & > #user-info {
@@ -230,7 +224,7 @@ const Snippet = () => {
     fetch(`http://localhost:8123/authors/likes/${userInfo.id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.body);
+        // console.log(data.body);
         if (data.body === null || !data.body.includes(snippet.id)) {
           setLikeBtn(false);
         } else if (data.body.includes(snippet.id) || data.body !== null) {
@@ -280,22 +274,18 @@ const Snippet = () => {
       <InfoWrap>
         <Info>
           <div id="icon">
-            <div>
-              {/* <span className="i-1">🤍</span> */}
-              {/* <span className="i-1">❤️</span> */}
-            </div>
+            <button
+              onClick={() => {
+                fetchAuthorLikes();
+              }}
+            >
+              {!likeBtn ? "저장" : "저장됨"}
+            </button>
             <div>
               <span>
                 {userInfo.id === snippet.author_id ? (
-                  <button onClick={deleteHandler}>삭제</button>
+                  <FontAwesomeIcon icon={faTrashCan} onClick={deleteHandler} />
                 ) : null}
-                <button
-                  onClick={() => {
-                    fetchAuthorLikes();
-                  }}
-                >
-                  {!likeBtn ? "저장" : "저장됨"}
-                </button>
               </span>
             </div>
           </div>

@@ -42,8 +42,6 @@ const Container = styled.div`
   // border: 1px solid red;
   position: relative;
   height: 100%;
-  // display: flex;
-  // justify-content: space-around;
   overflow: hidden;
   position: relative;
 `;
@@ -74,7 +72,6 @@ const Code = styled.div`
     background-color: #fdf6e3;
     width: 100%;
     height: 100%;
-    // padding: 10px;
     &:focus-within {
       box-shadow: rgba(255, 255, 255, 0.35) 0px 5px 15px;
     }
@@ -173,7 +170,6 @@ const LangSelection = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    // padding: 5px;
     margin: 0 5px;
     height: 100%;
     &:nth-of-type(2) {
@@ -228,7 +224,6 @@ const Wrap = styled.div`
 const Title = styled.div`
   background-color: transparent;
   border-bottom: 1px solid rgb(50, 50, 50);
-  // margin-top: 7rem;
   padding: 10px;
   position: absolute;
   top: 15%;
@@ -246,7 +241,6 @@ const Description = styled.div`
   background-color: white;
   padding: 10px;
   height: 20%;
-  // margin-top: 3rem;
   position: absolute;
   top: 40%;
   width: 100%;
@@ -266,7 +260,6 @@ const Description = styled.div`
 const Tag = styled.ul`
   // border: 1px solid red;
   display: flex;
-  // margin-top: 10px;
   position: absolute;
   top: 60%;
   width: 100%;
@@ -288,7 +281,6 @@ const TagInput = styled.input`
   width: 100px;
 `;
 const ButtonWrap = styled.div`
-  // margin-top: 5rem;
   // border: 1px solid red;
   position: absolute;
   bottom: 10%;
@@ -297,16 +289,12 @@ const ButtonWrap = styled.div`
 const SubmitBtn = styled.button`
   color: inherit;
   padding: 0.5rem 1rem;
-  background-color: #ce9187;
-  border: none;
+  background-color: transparent;
+  border: 1px solid #333333;
   // border: 1px solid white;
   border-radius: 40px;
   margin: 0 10px;
   cursor: pointer;
-  &:hover {
-    color: rgb(244, 244, 244);
-    text-shadow: 1px 1px 8px #ffffff, -1px 1px 5px #ffffff;
-  }
 `;
 const DeleteBtn = styled(SubmitBtn)``;
 
@@ -418,7 +406,7 @@ const PostPageTest = () => {
   };
 
   const [lang, setLang] = useState("javascript");
-  const [theme, setTheme] = useState("solarized_light");
+  const [theme, setTheme] = useState("kuroir");
 
   const langRef = useRef(null);
   const detectLang = (e) => {
@@ -529,6 +517,7 @@ const PostPageTest = () => {
             <DeleteBtn
               onClick={() => {
                 console.log(snippet);
+                setSubmitModal(false);
               }}
             >
               취소
@@ -568,7 +557,7 @@ const PostPageTest = () => {
 
         <div style={{ position: "absolute", top: "150px" }}>에디터 태마</div>
         <ThemeSelection>
-          <span ref={themeRef}>solarized_light</span>
+          <span ref={themeRef}>kuroir</span>
           <span style={{ cursor: "pointer" }} onClick={getThemeModal}>
             +
           </span>
@@ -576,12 +565,12 @@ const PostPageTest = () => {
         {themeModal ? (
           <ThemeModal>
             <ul>
-              <li onClick={detectTheme}>solarized_light</li>
+              <li onClick={detectTheme}>kuroir</li>
               <li onClick={detectTheme}>solarized_dark</li>
+              <li onClick={detectTheme}>solarized_light</li>
               <li onClick={detectTheme}>monokai</li>
               <li onClick={detectTheme}>github</li>
               <li onClick={detectTheme}>tomorrow</li>
-              <li onClick={detectTheme}>kuroir</li>
               <li onClick={detectTheme}>twilight</li>
               <li onClick={detectTheme}>xcode</li>
               <li onClick={detectTheme}>textmate</li>

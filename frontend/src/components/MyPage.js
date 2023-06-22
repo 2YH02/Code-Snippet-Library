@@ -29,7 +29,6 @@ const ProfileContainer = styled.div`
   align-items: center;
   & > .img-box {
     display: flex;
-    // justify-content: center;
     margin-right: 10px;
   }
   & > .img-box > img {
@@ -51,11 +50,19 @@ const ProfileContainer = styled.div`
       margin-right: 10px;
       font-size: 2rem;
       font-weight: bold;
+
+      @media (max-width: 768px) {
+        font-size: 1.5rem;
+      }
     }
     & > .user-email {
       display: flex;
       justify-content: center;
       align-items: center;
+
+      @media (max-width: 768px) {
+        font-size: 1rem;
+      }
     }
   }
   & > .info-box > .info-bottom {
@@ -66,8 +73,8 @@ const ProfileContainer = styled.div`
     & > .cg-pf-btn {
       cursor: pointer;
       border-radius: 20px;
-      border: none;
-      background-color: #ce9187;
+      border: 1px solid #5c5c5c;
+      background-color: #white;
       color: #333333;
       margin-left: 15px;
     }
@@ -75,8 +82,6 @@ const ProfileContainer = styled.div`
 `;
 const Select = styled.div`
   // border: 1px solid blue;
-  // width: 200px;
-  // margin: auto;
   & > ul {
     display: flex;
     justify-content: center;
@@ -263,6 +268,9 @@ const Container = styled.div`
   }
   & > .btn-wrap {
     bottom: 10px;
+    & > .btn {
+      margin: 0 0.5rem;
+    }
   }
 `;
 const LoadingWrap = styled.div`
@@ -450,11 +458,11 @@ function Modal({ setPromo }) {
             />
           </div>
           <div className="btn-wrap">
-            <button className="submit-btn" onClick={changeProfile}>
+            <button className="submit-btn btn" onClick={changeProfile}>
               제출
             </button>
             <button
-              className="cancel-btn"
+              className="cancel-btn btn"
               onClick={() => {
                 console.log(userInfo);
                 setPromo(false);

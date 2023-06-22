@@ -13,34 +13,25 @@ import {
 import data from "../data";
 import { useSelector } from "react-redux";
 
+const LoadingWrap = styled.div`
+  // border: 1px solid red;
+  margin-top: 7rem;
+  z-index: 1;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const Container = styled.div`
   // border: 1px solid red;
   position: relative;
   overflow: hidden;
   width: 100%;
   height: 100%;
-  // top: -100px;
-  // min-height: 800px;
   padding: 2rem;
-  // margin: 1rem;
   display: grid;
   place-items: center;
   grid-template-columns: repeat(3, 1fr);
-  // gap: 100px;
-  &::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #f5f5f5;
-  }
-
-  &::-webkit-scrollbar {
-    width: 10px;
-    background-color: #f5f5f5;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #000000;
-    border: 2px solid #555555;
-  }
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
@@ -48,17 +39,9 @@ const Container = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
   }
-  // @media (max-width: 768px) {
-  //   grid-template-columns: repeat(1, 1fr);
-  //   row-gap: 2rem;
-  // }
-  // @media (max-width: 520px) {
-  //   grid-template-columns: repeat(1, 1fr);
-  //   row-gap: 2rem;
-  // }
 `;
 const Card = styled.div`
-  // border: 1px solid rgb(225, 225, 225);
+border: 1px solid #BDBDBD;
   width: 290px;
   height: 220px;
   position: absolute;
@@ -67,15 +50,7 @@ const Card = styled.div`
   top: 10px;
   cursor: pointer;
   border-radius: 4px;
-  // padding: 1rem;
-  // display: flex;
-  // align-items: center;
   color: #333333;
-  background: rgb(215, 151, 141);
-  background: linear-gradient(
-    54deg,
-    rgba(215, 151, 141, 1) 0%,
-    rgba(255, 177, 164, 1) 100%
   );
   &:hover {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -84,7 +59,6 @@ const Card = styled.div`
     // border: 1px solid red;
     padding: 2px;
     border-bottom: 1px solid rgba(100, 100, 100, 0.3);
-    // margin: 2px;
     position: absolute;
     width: 86%;
     text-align: center;
@@ -95,8 +69,7 @@ const Card = styled.div`
 `;
 const CardWrap = styled.div`
   // border: 1px solid red;
-  background-color: #9b635a;
-  // background-color: white;
+  background-color: #BDBDBD;
   border-radius: 4px;
   width: 270px;
   height: 210px;
@@ -141,7 +114,6 @@ const Info = styled.div`
   &.isActive {
     // background-color: red;
     display: flex;
-    // align-items: center;
     & > * {
       diplay: flex;
     }
@@ -159,8 +131,9 @@ const LikeSnippets = () => {
     fetch(`http://localhost:8123/snippets/likes/${userInfo.id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.body);
+        // console.log(data.body);
         setSnippets(data.body);
+        setLoading(false);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -175,16 +148,13 @@ const LikeSnippets = () => {
   };
 
   const customStyle = {
-    // backgroundColor: "#333333",
     display: "inline-block",
     margin: "0",
     padding: "30px 15px",
     width: "100%",
     height: "100%",
     flex: "1",
-    // background:
-    //   "linear-gradient(54deg, rgba(215, 151, 141, 1) 0%, rgba(255, 177, 164, 1) 100%)",
-    backgroundColor: "#ebe2e2",
+    backgroundColor: "#f7f7f7",
     textOverflow: "ellipsis",
     display: "-webkit-box",
     WebkitLineClamp: 9,
@@ -194,45 +164,53 @@ const LikeSnippets = () => {
   };
 
   return (
-    <Container>
-      {snippets === undefined ? (
-        "좋아요한 코드 없음"
+    <>
+      {loading ? (
+        <LoadingWrap>
+          <Loading />
+        </LoadingWrap>
       ) : (
-        <>
-          {snippets.map((v, i) => {
-            return (
-              <CardWrapContainer key={v.id}>
-                <CardWrap
-                  onMouseEnter={mouseHandler}
-                  onMouseLeave={mouseHandler}
-                >
-                  <Card
-                    onClick={() => {
-                      navigate(`/snippets/${v.id}`);
-                    }}
-                  >
-                    <div id="syntax-title">{v.title}</div>
-                    <SyntaxHighlighter
-                      language="javascript"
-                      style={gruvboxLight}
-                      customStyle={customStyle}
+        <Container>
+          {snippets === undefined ? (
+            "좋아요한 코드 없음"
+          ) : (
+            <>
+              {snippets.map((v, i) => {
+                return (
+                  <CardWrapContainer key={v.id}>
+                    <CardWrap
+                      onMouseEnter={mouseHandler}
+                      onMouseLeave={mouseHandler}
                     >
-                      {v.code}
-                    </SyntaxHighlighter>
-                  </Card>
-                  <Info className={isActive ? "isActive" : ""}>
-                    <h3 className="title">{v.title}</h3>
-                    <p className="language">{v.language}</p>
-                    <div className="empty"></div>
-                    <p className="name">{v.author.name}</p>
-                  </Info>
-                </CardWrap>
-              </CardWrapContainer>
-            );
-          })}
-        </>
+                      <Card
+                        onClick={() => {
+                          navigate(`/snippets/${v.id}`);
+                        }}
+                      >
+                        <div id="syntax-title">{v.title}</div>
+                        <SyntaxHighlighter
+                          language="javascript"
+                          style={gruvboxLight}
+                          customStyle={customStyle}
+                        >
+                          {v.code}
+                        </SyntaxHighlighter>
+                      </Card>
+                      <Info className={isActive ? "isActive" : ""}>
+                        <h3 className="title">{v.title}</h3>
+                        <p className="language">{v.language}</p>
+                        <div className="empty"></div>
+                        <p className="name">{v.author.name}</p>
+                      </Info>
+                    </CardWrap>
+                  </CardWrapContainer>
+                );
+              })}
+            </>
+          )}
+        </Container>
       )}
-    </Container>
+    </>
   );
 };
 
