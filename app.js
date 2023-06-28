@@ -24,6 +24,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(express.static(__dirname + "/frontend/build"));
 // app.use(checkRequestBody); // 모든 json body 체크
 app.use(cookieParser()); // cookie 저장
 
@@ -31,6 +32,10 @@ app.use(cookieParser()); // cookie 저장
 app.use("/snippets", snippetRoutes);
 app.use("/authors", authorRoutes); // /authors/new 이런 식
 app.use(authRoutes);
+
+// app.get("/*", (req, res) => {
+//   res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+// });
 
 // Start server
 app.listen(config.port, () => {

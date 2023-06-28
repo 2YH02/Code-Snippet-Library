@@ -10,6 +10,7 @@ import {
   solarizedlight,
   gruvboxLight,
 } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useSelector, useDispatch } from "react-redux";
 
 const LoadingSnippet = keyframes`
   0% {
@@ -109,6 +110,8 @@ const Card = styled.div`
 const AllSnippets = () => {
   const navigate = useNavigate();
 
+  const modeInfo = useSelector((state) => state.mode);
+
   const [snippets, setSnippets] = useState([]);
 
   const customStyle = {
@@ -119,7 +122,7 @@ const AllSnippets = () => {
     height: "auto",
     minHeight: "170px",
     flex: "1",
-    backgroundColor: "#ededed",
+    backgroundColor: modeInfo.mode ? "#BDBDBD" : "#ededed",
     textOverflow: "ellipsis",
     WebkitLineClamp: 9,
     WebkitBoxOrient: "vertical",
@@ -153,6 +156,10 @@ const AllSnippets = () => {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    fetchSnippets();
+  }, []);
 
   const scrollBox = useRef(null);
   useEffect(() => {
@@ -204,6 +211,9 @@ const AllSnippets = () => {
                       onClick={() => {
                         navigate(`/snippets/${v.id}`);
                       }}
+                      style={{
+                        backgroundColor: modeInfo.mode ? "#616161" : null,
+                      }}
                     >
                       <h3 className="title">{v.title}</h3>
                       <p className="language">{v.language}</p>
@@ -230,7 +240,11 @@ const AllSnippets = () => {
             {loadingModal ? (
               <CardWrapContainer ref={scrollBox}>
                 <CardWrap>
-                  <Info style={{ color: "#c4c4c4" }}>
+                  <Info
+                    style={{
+                      backgroundColor: modeInfo.mode ? "#616161" : null,
+                    }}
+                  >
                     <h3 className="title-l">Loading</h3>
                     <p className="language-l">Loading</p>
                     <div className="empty"></div>

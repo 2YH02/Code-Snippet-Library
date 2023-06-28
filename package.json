@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "set PORT=8123 && node app.js",
+    "start": "node app.js",
     "watch": "nodemon -w ./app.js --exec npm run start"
   },
   "dependencies": {
@@ -12,10 +12,11 @@
     "google-auth-library": "^8.8.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.2.3",
+    "cors": "^2.8.5",
     "sequelize": "^6.31.0"
   },
   "devDependencies": {
-    "cors": "^2.8.5",
+    "@flydotio/dockerfile": "^0.2.16",
     "nodemon": "^2.0.22"
   }
 }

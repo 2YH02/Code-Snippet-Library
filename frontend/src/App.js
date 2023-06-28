@@ -10,6 +10,7 @@ import PostPageTest from "./components/PostPageTest";
 import Snippet from "./components/Snippet";
 import MySnippets from "./components/MySnippets";
 import UpdatePost from "./components/UpdatePost";
+import FixModal from "./components/FixModal";
 import { NotFound } from "./components/NotFound";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,6 +21,11 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { resetUserData } from "./features/userSlice";
 
+const Main = styled.div`
+  & .link:hover {
+    border-bottom-color: ${(props) => (!props.mode ? "#333333" : "#f7f7f7")};
+  }
+`;
 const MainLogo = styled.div`
   // border: 1px solid red;
   display: flex;
@@ -29,9 +35,11 @@ const MainLogo = styled.div`
 function App() {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user);
+  const modeInfo = useSelector((state) => state.mode);
   const dispatch = useDispatch();
 
   const [myModal, setMyModal] = useState(false);
+  const [fixModal, setFixModal] = useState(false);
   const [isActive, setIsActive] = useState("");
 
   const exitModal = () => {
@@ -55,29 +63,54 @@ function App() {
   return (
     <div className="App">
       {/* 메인페이지 */}
-      <div className="main-page">
+      <Main className="main-page" mode={modeInfo.mode ? "true" : undefined}>
         {/* 내비게이션 바 */}
-        <div className="header">
+        <div
+          className="header"
+          style={{
+            backgroundColor: modeInfo.mode ? "#333333" : null,
+            color: modeInfo.mode ? "#E0E0E0" : null,
+          }}
+        >
           <MainLogo
             className={"logo"}
             onClick={() => {
               navigate("/");
             }}
+            style={{ color: modeInfo.mode ? "#f7f7f7" : null }}
           >
-            <span className="highlight">SNIppeT Hub</span>
+            <span className="highlightWrap">
+              SNIppeT Hub
+              <div
+                className="highlight"
+                style={{ backgroundColor: modeInfo.mode ? "grey" : null }}
+              ></div>
+            </span>
           </MainLogo>
           <div className="header-menu">
-            <Link to={"/snippets"} className="link">
+            <Link
+              to={"/snippets"}
+              className="link"
+              style={{ color: modeInfo.mode ? "#c4c4c4" : null }}
+            >
               <FontAwesomeIcon icon={faList} />
             </Link>
-            <Link to={"/post-test"} className="link">
+            <Link
+              to={"/post-test"}
+              className="link"
+              style={{ color: modeInfo.mode ? "#c4c4c4" : null }}
+            >
               <FontAwesomeIcon icon={faCode} />
             </Link>
 
             <div className="search-bar">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
-                style={{ cursor: "pointer", zIndex: "10", color: "#5f5e5e" }}
+                style={{
+                  cursor: "pointer",
+                  zIndex: "10",
+                  color: modeInfo.mode ? "#c4c4c4" : "#5f5e5e",
+                }}
                 onClick={() => {
                   setSearch(!search);
                 }}
@@ -110,13 +143,28 @@ function App() {
                     toggleMyModal();
                   }}
                 >
-                  <div></div>
-                  <div></div>
-                  <div></div>
+                  <div
+                    style={{
+                      backgroundColor: modeInfo.mode ? "#f7f7f7" : null,
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      backgroundColor: modeInfo.mode ? "#f7f7f7" : null,
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      backgroundColor: modeInfo.mode ? "#f7f7f7" : null,
+                    }}
+                  ></div>
                 </div>
               </div>
               {myModal ? (
-                <div className="my-modal">
+                <div
+                  className="my-modal"
+                  style={{ backgroundColor: modeInfo.mode ? "#272727" : null }}
+                >
                   <ul>
                     <li>
                       <a
@@ -125,7 +173,15 @@ function App() {
                           exitModal();
                         }}
                       >
-                        <span className="highlight-1">마이페이지</span>
+                        <span className="highlight-1-wrap">
+                          마이페이지
+                          <div
+                            className="highlight-1"
+                            style={{
+                              background: modeInfo.mode ? "grey" : null,
+                            }}
+                          ></div>
+                        </span>
                       </a>
                     </li>
                     <li>
@@ -135,17 +191,33 @@ function App() {
                           exitModal();
                         }}
                       >
-                        <span className="highlight-1">글쓰기</span>
+                        <span className="highlight-1-wrap">
+                          글쓰기
+                          <div
+                            className="highlight-1"
+                            style={{
+                              background: modeInfo.mode ? "grey" : null,
+                            }}
+                          ></div>
+                        </span>
                       </a>
                     </li>
                     <li>
                       <a
                         onClick={() => {
-                          navigate("/");
+                          setFixModal(true);
                           exitModal();
                         }}
                       >
-                        <span className="highlight-1">설정</span>
+                        <span className="highlight-1-wrap">
+                          설정
+                          <div
+                            className="highlight-1"
+                            style={{
+                              background: modeInfo.mode ? "grey" : null,
+                            }}
+                          ></div>
+                        </span>
                       </a>
                     </li>
                     <li>
@@ -158,7 +230,15 @@ function App() {
                           navigate("/");
                         }}
                       >
-                        <span className="highlight-1">로그아웃</span>
+                        <span className="highlight-1-wrap">
+                          로그아웃
+                          <div
+                            className="highlight-1"
+                            style={{
+                              background: modeInfo.mode ? "grey" : null,
+                            }}
+                          ></div>
+                        </span>
                       </a>
                     </li>
                   </ul>
@@ -179,10 +259,14 @@ function App() {
         </div>
 
         {/* 메인컨텐츠 */}
-        <div className="main-content">
-          {/* 사이드 바 */}
-          {/* <Aside /> */}
-
+        <div
+          className="main-content"
+          style={{
+            backgroundColor: modeInfo.mode ? "#212121" : null,
+            color: modeInfo.mode ? "#BDBDBD" : null,
+          }}
+        >
+          {fixModal ? <FixModal setFixModal={setFixModal} /> : null}
           <Routes>
             {/* 홈 */}
             <Route path="/" element={<Home />} />
@@ -204,7 +288,7 @@ function App() {
             <Route path="/*" element={<NotFound />}></Route>
           </Routes>
         </div>
-      </div>
+      </Main>
     </div>
   );
 }

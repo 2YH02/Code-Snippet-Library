@@ -301,6 +301,7 @@ const DeleteBtn = styled(SubmitBtn)``;
 const PostPageTest = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user);
+  const modeInfo = useSelector((state) => state.mode);
 
   const [loading, setLoading] = useState(false);
 
@@ -471,16 +472,28 @@ const PostPageTest = () => {
           />
         </div>
       </Code>
-      <Info className={!submitModal ? "" : "isActive"}>
+      <Info
+        className={!submitModal ? "" : "isActive"}
+        style={{
+          color: modeInfo.mode ? "#E0E0E0" : null,
+          backgroundColor: modeInfo.mode ? "#333333" : null,
+        }}
+      >
         <span onClick={submitModalClick}>
           <FontAwesomeIcon icon={faFileArrowDown} />
         </span>
         <Wrap className="none">
-          <Title>
+          <Title
+            style={{
+              borderBottom: modeInfo.mode ? ".5px solid #E0E0E0" : null,
+            }}
+          >
             <input type="text" onChange={saveTitle} placeholder="제목"></input>
           </Title>
 
-          <Description>
+          <Description
+            style={{ border: modeInfo.mode ? ".5px solid #E0E0E0" : null }}
+          >
             <textarea onChange={saveDescription} placeholder="설명"></textarea>
           </Description>
 
@@ -511,6 +524,9 @@ const PostPageTest = () => {
               onClick={() => {
                 postCode();
               }}
+              style={{
+                border: modeInfo.mode ? ".5px solid #E0E0E0" : null,
+              }}
             >
               저장
             </SubmitBtn>
@@ -519,25 +535,38 @@ const PostPageTest = () => {
                 console.log(snippet);
                 setSubmitModal(false);
               }}
+              style={{
+                border: modeInfo.mode ? ".5px solid #E0E0E0" : null,
+              }}
             >
               취소
             </DeleteBtn>
           </ButtonWrap>
         </Wrap>
       </Info>
-      <Fix className={!fixModal ? "" : "isActive"}>
+      <Fix
+        className={!fixModal ? "" : "isActive"}
+        style={{
+          color: modeInfo.mode ? "#E0E0E0" : null,
+          backgroundColor: modeInfo.mode ? "#333333" : null,
+        }}
+      >
         <span onClick={fixModalClick}>
           <FontAwesomeIcon icon={faToolbox} />
         </span>
         <div style={{ position: "absolute", top: "50px" }}>언어 선택</div>
-        <LangSelection>
+        <LangSelection
+          style={{ border: modeInfo.mode ? "1px solid #E0E0E0" : null }}
+        >
           <span ref={langRef}>JavaScript</span>
           <span style={{ cursor: "pointer" }} onClick={getLangModal}>
             +
           </span>
         </LangSelection>
         {langModal ? (
-          <LangModal>
+          <LangModal
+            style={{ backgroundColor: modeInfo.mode ? "#757575" : null }}
+          >
             <ul>
               <li onClick={detectLang}>JavaScript</li>
               <li onClick={detectLang}>Java</li>
@@ -556,14 +585,18 @@ const PostPageTest = () => {
         ) : null}
 
         <div style={{ position: "absolute", top: "150px" }}>에디터 태마</div>
-        <ThemeSelection>
+        <ThemeSelection
+          style={{ border: modeInfo.mode ? "1px solid #E0E0E0" : null }}
+        >
           <span ref={themeRef}>kuroir</span>
           <span style={{ cursor: "pointer" }} onClick={getThemeModal}>
             +
           </span>
         </ThemeSelection>
         {themeModal ? (
-          <ThemeModal>
+          <ThemeModal
+            style={{ backgroundColor: modeInfo.mode ? "#757575" : null }}
+          >
             <ul>
               <li onClick={detectTheme}>kuroir</li>
               <li onClick={detectTheme}>solarized_dark</li>

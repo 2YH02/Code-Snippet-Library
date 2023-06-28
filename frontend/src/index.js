@@ -13,15 +13,15 @@ const clientId =
   "553055141427-tellilrsf644g02h99hkua5jeba09usr.apps.googleusercontent.com";
 let persistor = persistStore(store);
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <GoogleOAuthProvider clientId={clientId}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </GoogleOAuthProvider>
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <GoogleOAuthProvider clientId={clientId}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </GoogleOAuthProvider>
+    </PersistGate>
+  </Provider>
+  // </React.StrictMode>
 );

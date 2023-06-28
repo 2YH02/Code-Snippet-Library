@@ -2,7 +2,7 @@
 require("dotenv").config(); // loads environment variables from a .env file into process.env
 
 module.exports = {
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 8123,
   db: {
     database: process.env.DB_DATABASE || "snippet_library",
     user: process.env.DB_USER || "root",

@@ -122,6 +122,7 @@ const Info = styled.div`
 const MySnippets = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user);
+  const modeInfo = useSelector((state) => state.mode);
 
   const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -171,7 +172,7 @@ const MySnippets = () => {
           <Loading />
         </LoadingWrap>
       ) : (
-        <Container>
+        <Container style={{ color: "#333333" }}>
           {snippets.map((v, i) => {
             return (
               <CardWrapContainer key={v.id}>

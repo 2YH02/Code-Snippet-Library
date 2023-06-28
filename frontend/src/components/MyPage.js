@@ -119,6 +119,7 @@ const ProfileModal = styled.div`
 const MyPage = (props) => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user);
+  const modeInfo = useSelector((state) => state.mode);
 
   useEffect(() => {
     if (userInfo.isLogin === false) {
@@ -206,7 +207,7 @@ const MyPage = (props) => {
 const Container = styled.div`
   // border: 1px solid blue;
   background-color: white;
-  width: 560px;
+  width: 450px;
   height: 250px;
   border-radius: 5px;
   position: relative;
@@ -270,6 +271,11 @@ const Container = styled.div`
     bottom: 10px;
     & > .btn {
       margin: 0 0.5rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 1rem;
+      background-color: transparent;
+      border: 1px solid;
+      outline: none;
     }
   }
 `;
@@ -287,6 +293,7 @@ function Modal({ setPromo }) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user);
+  const modeInfo = useSelector((state) => state.mode);
 
   const [updateUser, setUpdateUser] = useState({
     author_id: userInfo.id,
@@ -414,7 +421,7 @@ function Modal({ setPromo }) {
   };
   // console.log(user.photo);
   return (
-    <Container>
+    <Container style={{ backgroundColor: modeInfo.mode ? "#5c5c5c" : null }}>
       {loading ? (
         <LoadingWrap>
           <Loading />
@@ -458,7 +465,14 @@ function Modal({ setPromo }) {
             />
           </div>
           <div className="btn-wrap">
-            <button className="submit-btn btn" onClick={changeProfile}>
+            <button
+              className="submit-btn btn"
+              onClick={changeProfile}
+              style={{
+                border: modeInfo.mode ? "1px solid #E0E0E0" : null,
+                color: modeInfo.mode ? "#E0E0E0" : null,
+              }}
+            >
               제출
             </button>
             <button
@@ -466,6 +480,10 @@ function Modal({ setPromo }) {
               onClick={() => {
                 console.log(userInfo);
                 setPromo(false);
+              }}
+              style={{
+                border: modeInfo.mode ? "1px solid #E0E0E0" : null,
+                color: modeInfo.mode ? "#E0E0E0" : null,
               }}
             >
               취소

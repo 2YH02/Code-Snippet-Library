@@ -28,6 +28,7 @@ const First = styled.div`
     box-sizing: border-box;
   }
   background-color: #e8eaf6;
+  // background-color: grey;
   position: relative;
   width: 100%;
   height: calc(100vh - 56px);
@@ -48,7 +49,7 @@ const First = styled.div`
       z-index: 11;
       width: 0;
       height: 1.5vw;
-      background-color: #82f888;
+      background-color: ${(props) => (!props.mode ? "#82f888" : "grey")};
       position: absolute;
       bottom: 0;
       left: 0;
@@ -238,6 +239,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const userInfo = useSelector((state) => state.user);
+  const modeInfo = useSelector((state) => state.mode);
   const dispatch = useDispatch();
 
   // 스크롤
@@ -311,7 +313,13 @@ const Home = () => {
         setScroll(e.target.scrollTop);
       }}
     >
-      <First>
+      <First
+        style={{
+          backgroundColor: modeInfo.mode ? "#212121" : null,
+          color: modeInfo.mode ? "#f7f7f7" : null,
+        }}
+        mode={modeInfo.mode ? "true" : undefined}
+      >
         <div style={{ display: display ? "none" : "block" }}>
           <span
             className="title title-m"
@@ -328,7 +336,13 @@ const Home = () => {
             CoDE
           </span>
         </div>
-        <div style={{ left: left, display: display ? "block" : "none" }}>
+        <div
+          style={{
+            left: left,
+            display: display ? "block" : "none",
+            backgroundColor: modeInfo.mode ? "grey" : null,
+          }}
+        >
           <span
             className="title titleS-m"
             style={{
@@ -338,7 +352,13 @@ const Home = () => {
             SNIPPET
           </span>
         </div>
-        <div style={{ left: leftS, display: displayS ? "block" : "none" }}>
+        <div
+          style={{
+            left: leftS,
+            display: displayS ? "block" : "none",
+            backgroundColor: modeInfo.mode ? "grey" : null,
+          }}
+        >
           <span
             className="title titleS-s"
             style={{ fontStyle: fontStyle[0] ? "normal" : "italic" }}
@@ -355,6 +375,7 @@ const Home = () => {
           <a
             onClick={() => {
               console.log(userInfo);
+              navigate("/post-test");
             }}
           >
             START
@@ -383,9 +404,15 @@ const Home = () => {
           </video>
         </div>
       </First>
-      <Second></Second>
-      <Third></Third>
-      <Fourth></Fourth>
+      <Second
+        style={{ backgroundColor: modeInfo.mode ? "#424242" : null }}
+      ></Second>
+      <Third
+        style={{ backgroundColor: modeInfo.mode ? "#424242" : null }}
+      ></Third>
+      <Fourth
+        style={{ backgroundColor: modeInfo.mode ? "#212121" : null }}
+      ></Fourth>
     </Main>
   );
 };

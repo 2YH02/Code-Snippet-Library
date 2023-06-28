@@ -4,6 +4,7 @@ import {
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
 import userReducer from "./features/userSlice";
+import modeReducer from "./features/modeSlice";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -14,6 +15,7 @@ const userPersistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
+  mode: modeReducer,
 });
 
 const persistedReducer = persistReducer(userPersistConfig, rootReducer);

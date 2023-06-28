@@ -85,32 +85,32 @@ li {
   font-family: "Ysabeau", sans-serif;
 }
 
-.highlight {
+.highlightWrap {
   display: inline-block;
   position: relative;
 }
-.highlight:after {
-  content: "";
+.highlight {
+  /* content: ""; */
   width: 100%;
   height: 20px;
   display: inline-block;
-  background: #b7f8ba;
+  background-color: #b7f8ba;
   position: absolute;
   top: 10%;
   bottom: 0;
   left: 2%;
-  z-index: -1;
+  z-index: -2;
   opacity: 0;
   transform: rotate(15deg);
   transition: all 0.4s;
 }
 
-.highlight-1 {
+.highlight-1-wrap {
   display: inline-block;
   position: relative;
 }
-.highlight-1:after {
-  content: "";
+.highlight-1 {
+  /* content: ""; */
   width: 0;
   height: 10px;
   display: inline-block;
@@ -122,7 +122,11 @@ li {
   transition: 0.2s all;
 }
 
-.logo:hover .highlight:after {
+/* .highlight-1-wrap:hover .highlight-1 {
+  width: 100%;
+} */
+
+.logo:hover .highlight {
   opacity: 1;
 }
 
@@ -304,7 +308,7 @@ li {
   outline: none;
 }
 
-.my-modal li:hover .highlight-1:after {
+.my-modal li:hover .highlight-1 {
   width: 100%;
 }
 

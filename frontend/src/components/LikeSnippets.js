@@ -69,7 +69,7 @@ border: 1px solid #BDBDBD;
 `;
 const CardWrap = styled.div`
   // border: 1px solid red;
-  background-color: #BDBDBD;
+  background-color: #bdbdbd;
   border-radius: 4px;
   width: 270px;
   height: 210px;
@@ -123,6 +123,7 @@ const Info = styled.div`
 const LikeSnippets = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.user);
+  const modeInfo = useSelector((state) => state.mode);
 
   const [snippets, setSnippets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -170,7 +171,7 @@ const LikeSnippets = () => {
           <Loading />
         </LoadingWrap>
       ) : (
-        <Container>
+        <Container style={{color: "#333333"}}>
           {snippets === undefined ? (
             "좋아요한 코드 없음"
           ) : (
