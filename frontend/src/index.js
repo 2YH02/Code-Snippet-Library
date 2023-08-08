@@ -9,8 +9,7 @@ import { persistStore } from "redux-persist";
 import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const clientId =
-  "553055141427-tellilrsf644g02h99hkua5jeba09usr.apps.googleusercontent.com";
+const clientId = process.env.REACT_APP_CLIENT_ID;
 let persistor = persistStore(store);
 root.render(
   // <React.StrictMode>
