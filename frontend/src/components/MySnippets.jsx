@@ -158,7 +158,7 @@ const MySnippets = () => {
     flex: "1",
     backgroundColor: "#f7f7f7",
     textOverflow: "ellipsis",
-    display: "-webkit-box",
+    // display: "-webkit-box",
     WebkitLineClamp: 9,
     WebkitBoxOrient: "vertical",
     overflow: "hidden",

@@ -9,7 +9,7 @@ import { persistStore } from "redux-persist";
 import store from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const clientId = process.env.REACT_APP_CLIENT_ID;
+const clientId = import.meta.env.VITE_APP_CLIENT_ID;
 let persistor = persistStore(store);
 root.render(
   // <React.StrictMode>

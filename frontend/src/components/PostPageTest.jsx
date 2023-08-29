@@ -1,11 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSolid,
-  faFileArrowDown,
-  faToolbox,
-} from "@fortawesome/free-solid-svg-icons";
+import { faFileArrowDown, faToolbox } from "@fortawesome/free-solid-svg-icons";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import codeprism from "../styles/codeprism";
 import AceEditor from "react-ace";
